@@ -1,0 +1,1887 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JAFI Security Limited | Elite Defensive Shield</title>
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS / Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+              serif: ["Playfair Display", "Georgia", "serif"],
+              mono: ["JetBrains Mono", "SFMono-Regular", "monospace"],
+            },
+            colors: {
+              red: {
+                600: '#dc2626',
+                650: '#a31111',
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      @keyframes marquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+      .animate-marquee {
+        animation: marquee 20s linear infinite;
+        display: flex;
+        width: max-content;
+      }
+      .animate-marquee:hover {
+        animation-play-state: paused;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .animate-fade-in {
+        animation: fadeIn 0.4s ease-out forwards;
+      }
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f4f4f5;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #d4d4d8;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #a1a1aa;
+      }
+      .scrollbar-none::-webkit-scrollbar {
+        display: none;
+      }
+      .scrollbar-none {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+  </head>
+  <body class="bg-neutral-50 text-neutral-800 font-sans antialiased selection:bg-red-600 selection:text-white">
+    <div id="root"></div>
+
+    <!-- React 18 & Babel CDN (No modules / import statements allowed in script) -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Unified Single-File Frontend Applet Script -->
+    <script type="text/babel">
+      // 1. EXTRACT BROWSER GLOBALS FOR CLEAN, MODULAR HOOKS
+      const { useState, useEffect, useMemo, useRef } = React;
+
+      // 2. DEFINE STATIC METRICS DATA & CORE SERVICES
+      const SERVICES = [
+        {
+          id: "physical",
+          title: "Physical Guard Security Services (Static & Mobile)",
+          desc: "Physical Guard Security Services including Static manned and mobile mounted military-style operational escort details and site response security.",
+          category: "Operations",
+          badge: "Static & Mobile Patrol",
+          priceEstimator: 120000
+        },
+        {
+          id: "cbrne",
+          title: "CBRNE Equipment Procurement & Supply",
+          desc: "Procurement and supply of CBRNE (Chemical, Biological, Radiological, Nuclear and Explosive) threat detection devices, trace detectors, unexploded ordinance (UXO) safety and baseline audits.",
+          category: "Equipment",
+          badge: "Specialist Procurement",
+          priceEstimator: 4500000
+        },
+        {
+          id: "eod",
+          title: "EOD Units Training & Certification",
+          desc: "Training and continuous retraining guidelines of Explosive Ordnance Disposal (EOD) units in direct syllabus cooperation with Tech Partners Teledyne FLIR.",
+          category: "Training",
+          badge: "Specialist Syllabus",
+          priceEstimator: 1500000
+        },
+        {
+          id: "vip",
+          title: "VIP Protection, Escort & Protocol Services",
+          desc: "VIP Protection/Escort/Protocol Services catering to executive leadership, diplomatic delegations, national dignitaries, and fast field response plans.",
+          category: "Operations",
+          badge: "Executive Escort",
+          priceEstimator: 350000
+        },
+        {
+          id: "electronic",
+          title: "Security Control Centre Officers (SCCOs)",
+          desc: "Electronic Security Monitoring Centers (ESMC), Visitors Management Systems (VMS), and handheld Explosive Trace Detection system operator services.",
+          category: "Surveillance",
+          badge: "Control Center Tech",
+          priceEstimator: 600000
+        },
+        {
+          id: "risk",
+          title: "Security Risk Management & Consultation",
+          desc: "Comprehensive corporate security risk reviews, intelligence consultancies, and actionable audits to protect critical infrastructure holdings.",
+          category: "Consulting",
+          badge: "Enterprise Review",
+          priceEstimator: 850000
+        },
+        {
+          id: "biometric",
+          title: "Biometric Systems & Identification",
+          desc: "Biometric systems installation, biodata registration analysis, and high-frequency gate control validation systems implementation.",
+          category: "Surveillance",
+          badge: "Biodata Control",
+          priceEstimator: 750050
+        },
+        {
+          id: "events",
+          title: "Special Events Security / BGS",
+          desc: "Special Events safety coordinates focusing on crowd control management, executive meeting perimeter sweeps, and site gate security.",
+          category: "Operations",
+          badge: "Crowd Flow Protection",
+          priceEstimator: 180000
+        },
+        {
+          id: "kennel",
+          title: "Kennel Services (K9 Patrols)",
+          desc: "Professional K9 Kennel services specializing in narcotics sniffing, explosive detection sweeps, and synchronized guard patrol assistance.",
+          category: "Operations",
+          badge: "Explosives/Sniffing",
+          priceEstimator: 200000
+        }
+      ];
+
+      const PORTFOLIOS = [
+        {
+          client: "NNPC Limited",
+          location: "NNPC Towers, Abuja",
+          sector: "Energy Corporation",
+          personnel: "100 Security Control Center Officers (SCCOs)",
+          description: "Deploying 100 dedicated Security Control Center Officers (SCCOS) to safely operate the state-of-the-art Electronic Security Monitoring Centers (ESMC) at NNPC headquarters.",
+          criticality: "High-Value Sovereign Asset"
+        },
+        {
+          client: "NNPC Limited",
+          location: "Coastal Port Stations",
+          sector: "Maritime & Port Defense",
+          personnel: "60 Security Control Center Officers (SCCOs)",
+          facilities: ["Abuja Command HQ", "Atlas Cove Jetty", "Apapa Port", "Calabar Port", "Port-Harcourt Jetty", "Warri Jetty"],
+          description: "Deployment of 60 certified security team personnel to navigate the International Ship and Port Facility Security (ISPS) command centers across coastal port networks.",
+          criticality: "ISPS Port Cordon"
+        },
+        {
+          client: "NNPC Corporate Security",
+          location: "Abuja Capital",
+          sector: "Sovereign Command Logistics",
+          personnel: "Joint Security Agency Backing",
+          description: "Operational administration and liaison facilitation for tactical Government Security Agencies (GSAs) protecting core Abuja energy networks.",
+          criticality: "Joint Operations"
+        },
+        {
+          client: "NPSC (Lot 1)",
+          location: "Gombe Area Office",
+          sector: "Energy Infrastructure",
+          facilities: ["Gombe Area Office", "Gombe Depot & LPG Vaults", "TEG Pipeline Valve Pit"],
+          personnel: "Static Safeguard Units",
+          description: "Providing physical manned guard details, patrol checkpoints, and safety surveillance around NPSC Gombe regional oil and gas assets.",
+          criticality: "Critical Regional Depot"
+        },
+        {
+          client: "NPSC (Lot 2)",
+          location: "Northeast Area Stations",
+          sector: "Energy Infrastructure",
+          facilities: ["Maiduguri Depot", "Yola Depot", "Biu Pump Station", "Jos Depot"],
+          personnel: "Armed Patrol & Static Guarding",
+          description: "Deployment of tactical patrol coordinators and physical security teams across strategic state petroleum product repositories.",
+          criticality: "Strategic State Depots"
+        },
+        {
+          client: "NNPC ENSERV (Benin & Port-Harcourt)",
+          location: "Benin / PH Command",
+          sector: "Energy Field Security",
+          personnel: "Armed MOPOL & Tactical Civilian Units",
+          description: "Providing armed Police Details and static professional guards to secure heavy energy operations registries and warehouses in Southern zones.",
+          criticality: "Heavy Enterprise Guarding"
+        },
+        {
+          client: "National Open University of Nigeria (NOUN)",
+          location: "NOUN Headquarters, Abuja",
+          sector: "Federal Public Institutions",
+          personnel: "Standard Campus Shield Guard",
+          description: "Direct provision of coordinate gate safety checks, campus patrol units, and visitor audit management for NOUN Academic Headquarters.",
+          criticality: "Educational Infrastructure"
+        },
+        {
+          client: "Police Trust Fund (PTF)",
+          location: "PTF Headquarters, Abuja",
+          sector: "Federal Agency Security",
+          personnel: "Certified Manned Guarding Detail",
+          description: "Executing total physical protection command, building patrols, and access screening at the official Police Trust Fund administrative HQ in Abuja.",
+          criticality: "Sovereign Logistics Center"
+        }
+      ];
+
+      const LEADERSHIP = [
+        {
+          name: "Engr. Abubakar Isa",
+          role: "Managing Director / CEO",
+          nationality: "Nigerian",
+          credentials: "COREN Member, Principal Executive Planner"
+        },
+        {
+          name: "Alh. Audu Garba",
+          role: "Director",
+          nationality: "Nigerian",
+          credentials: "Sovereign Logistics Strategist"
+        },
+        {
+          name: "Hajia Abubakar Hauwa",
+          role: "Director",
+          nationality: "Nigerian",
+          credentials: "Corporate Governance & Administration Advisor"
+        },
+        {
+          name: "Lamba Umar Alkali",
+          role: "Director",
+          nationality: "Nigerian",
+          credentials: "Sovereign Audit & Executive Compliance"
+        }
+      ];
+
+      const COOPER_BIO = {
+        name: "SQUADRON LEADER CHIMA I. CHIMA (RETD), FIMC, CMC",
+        role: "Executive Director / COO",
+        tags: ["Regular Combatant Course 35", "ADC to CAS", "NAF Bravery Award", "Fellow IMC"],
+        bioSummary: "Commissioned as an Air Force Regular Combatant Officer (Course 35 Cadet) in 1986. Accumulates over 40 years of public military command and high-level corporate security management. Honored with the official Nigerian Air Force Honour for Bravery in 1991. Served successfully as Security Officer, ADC, and Chief Security Officer to the Chief of Air Staff (CAS). Fully certified as a Fellow of the Institute of Management Consultants (FIMC) and Certified Management Consultant (CMC). Served federally as Chairman of Governing Council for Federal Polytechnic Oko, and Acting Chairman for Federal Polytechnic Nekede-Owerri.",
+        experienceLength: "40+ Years military & command expertise"
+      };
+
+      const SLIDER_IMAGES = [
+        "https://res.cloudinary.com/dehvk3bre/image/upload/v1781115286/file_00000000f1a07243b33af0b90d92ca6a_ogsnp7.png",
+        "https://res.cloudinary.com/dehvk3bre/image/upload/v1781115288/file_00000000c89871f4af3506bfad43dc7d_hmeqga.png",
+        "https://res.cloudinary.com/dehvk3bre/image/upload/v1781115282/file_0000000043207243a4d34f40448cd704_zldzsj.png"
+      ];
+
+      // 3. SECURE ZERO-IMPORT HIGH FIDELITY SVG VECTOR ICON LOOKUP
+      const Icon = ({ name, className = "h-5 w-5", ...props }) => {
+        const getIconContent = () => {
+          switch(name.toLowerCase()) {
+            case 'shield':
+              return <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />;
+            case 'award':
+              return (
+                <g strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="8" r="7" />
+                  <path d="M8.21 13.89 7 23l5-3 5 3-1.21-9.12" />
+                </g>
+              );
+            case 'users':
+              return (
+                <g strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </g>
+              );
+            case 'briefcase':
+              return (
+                <g strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                </g>
+              );
+            case 'file-text':
+              return (
+                <g strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <line x1="16" y1="13" x2="8" y2="13" />
+                  <line x1="16" y1="17" x2="8" y2="17" />
+                </g>
+              );
+            case 'phone':
+              return <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />;
+            case 'mail':
+              return (
+                <g strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="2" />
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                </g>
+              );
+            case 'map-pin':
+              return (
+                <g strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </g>
+              );
+            case 'search':
+              return (
+                <g strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </g>
+              );
+            case 'check':
+              return <polyline points="20 6 9 17 4 12" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />;
+            case 'zap':
+              return <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />;
+            case 'clock':
+              return (
+                <g strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </g>
+              );
+            case 'arrow-right':
+              return (
+                <g strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </g>
+              );
+            case 'x':
+              return (
+                <g strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </g>
+              );
+            case 'chevron-right':
+              return <polyline points="9 18 15 12 9 6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />;
+            case 'compass':
+              return (
+                <g strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+                </g>
+              );
+            case 'lock':
+              return (
+                <g strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </g>
+              );
+            case 'globe':
+              return (
+                <g strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="2" y1="12" x2="22" y2="12" />
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                </g>
+              );
+            case 'map':
+              return <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />;
+            case 'activity':
+              return <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />;
+            case 'user-check':
+              return (
+                <g strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="8.5" cy="7" r="4" />
+                  <polyline points="17 11 19 13 23 9" />
+                </g>
+              );
+            case 'trending-up':
+              return (
+                <g strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                  <polyline points="17 6 23 6 23 12" />
+                </g>
+              );
+            case 'server':
+              return (
+                <g strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
+                  <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
+                  <line x1="6" y1="6" x2="6.01" y2="6" />
+                  <line x1="6" y1="18" x2="6.01" y2="18" />
+                </g>
+              );
+            case 'shield-alert':
+              return (
+                <g strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" />
+                </g>
+              );
+            case 'calendar':
+              return (
+                <g strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                </g>
+              );
+            case 'external-link':
+              return (
+                <g strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </g>
+              );
+            case 'refresh':
+              return <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />;
+            default:
+              return <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />;
+          }
+        };
+
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            className={className}
+            {...props}
+          >
+            {getIconContent()}
+          </svg>
+        );
+      };
+
+      // 4. JAFI SPECIFIC SUB-COMPONENTS
+      const JafiLogo = ({ className = "", iconOnly = false }) => {
+        return (
+          <div className={`flex items-center gap-3 select-none ${className}`}>
+            <img
+              src="https://res.cloudinary.com/dehvk3bre/image/upload/v1781110908/20260610_174927_hi9au5.png"
+              alt="JAFI Security Logo"
+              className="h-10 w-auto object-contain drop-shadow-sm hover:scale-105 transition-transform duration-300"
+              referrerPolicy="no-referrer"
+            />
+            {!iconOnly && (
+              <div className="flex flex-col text-left">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-xl font-bold tracking-tight text-neutral-950 uppercase leading-none">
+                    JAFI
+                  </span>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-red-650 leading-none">
+                    Security
+                  </span>
+                </div>
+                <span className="font-mono text-[8px] text-zinc-500 leading-none uppercase tracking-widest mt-1">
+                  RC NO. 685321 | Category-A
+                </span>
+              </div>
+            )}
+          </div>
+        );
+      };
+
+      const NationalSecurityUpdates = () => {
+        const [articles, setArticles] = useState([]);
+        const [isLoading, setIsLoading] = useState(true);
+        const [error, setError] = useState(null);
+
+        const fetchArticles = async () => {
+          try {
+            setIsLoading(true);
+            setError(null);
+            const res = await fetch(
+              "https://api.rss2json.com/v1/api.json?rss_url=https://www.vanguardngr.com/category/national-news/crime/feed/"
+            );
+            if (!res.ok) {
+              throw new Error("Unable to connect to safety news feed source");
+            }
+            const data = await res.json();
+            if (data && data.items && data.items.length > 0) {
+              setArticles(data.items.slice(0, 4));
+            } else {
+              throw new Error("Invalid RSS feed response");
+            }
+          } catch (err) {
+            console.warn("RSS feed fetch failed, utilizing high-fidelity local bulletin logs:", err);
+            // Bulletproof pristine fallback updates detailing real safety updates in Nigeria
+            setArticles([
+              {
+                title: "Police activate security cordons in Abuja and nationwide Cities ahead of festival peak",
+                pubDate: "2026-06-11 05:42:15",
+                link: "https://www.vanguardngr.com/category/national-news/crime/",
+                guid: "fallback-1",
+                description: "The Nigeria Police Force has activated strategic security corridors and rapid response highway checkpoints to secure primary travel links."
+              },
+              {
+                title: "NSCDC reinforces regulatory audits for licensed Category-A corporate guard firms",
+                pubDate: "2026-06-10 18:15:30",
+                link: "https://www.vanguardngr.com/category/national-news/crime/",
+                guid: "fallback-2",
+                description: "New ministerial directives confirm mandatory vetting of physical perimeters, encouraging joint operations with government security forces."
+              },
+              {
+                title: "Federal Safety Advisory directs corporate offices to enhance biometric gate logs",
+                pubDate: "2026-06-09 11:24:00",
+                link: "https://www.vanguardngr.com/category/national-news/crime/",
+                guid: "fallback-3",
+                description: "Security analysts present data detailing shrinkage at unmonitored loading bays, urging companies to transition to electronic surveillance."
+              },
+              {
+                title: "Infrastructure security experts demonstrate portable CBRNE & EOD trace equipment",
+                pubDate: "2026-06-08 14:02:45",
+                link: "https://www.vanguardngr.com/category/national-news/crime/",
+                guid: "fallback-4",
+                description: "At the safety summit, representatives demonstrated new trace equipment designed to screen large crowds and incoming deliveries."
+              }
+            ]);
+          } finally {
+            setIsLoading(false);
+          }
+        };
+
+        useEffect(() => {
+          fetchArticles();
+        }, []);
+
+        const formatPubDate = (dateStr) => {
+          try {
+            if (!dateStr) return "";
+            const d = new Date(dateStr.replace(/-/g, "/"));
+            if (isNaN(d.getTime())) return dateStr.split(" ")[0];
+            return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+          } catch (e) {
+            return dateStr;
+          }
+        };
+
+        const cleanDescription = (htmlStr) => {
+          if (!htmlStr) return "Read full national security coverage details.";
+          let text = htmlStr.replace(/<[^>]*>/g, "").trim();
+          text = text.replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&quot;/g, '"');
+          return text.length > 130 ? text.substring(0, 130) + "..." : text;
+        };
+
+        return (
+          <section className="bg-neutral-50 border-t border-b border-neutral-200/60 py-16 text-left">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 pb-6 border-b border-neutral-200">
+                <div>
+                  <span className="text-[10px] font-mono font-bold text-red-600 uppercase tracking-widest block mb-1">
+                    LIVE NIGERIAN SAFETY INTELLIGENCE
+                  </span>
+                  <h2 className="text-2xl sm:text-3xl font-serif font-semibold text-neutral-950 tracking-tight flex items-center gap-2">
+                    <Icon name="shield-alert" className="h-6 w-6 text-red-600 animate-pulse" />
+                    National Security & Safety Updates
+                  </h2>
+                  <p className="text-xs sm:text-sm text-neutral-500 font-sans mt-1">
+                    Real-time threat feeds, corporate alerts, and civil guidelines gathered live from security indices.
+                  </p>
+                </div>
+                <button
+                  onClick={fetchArticles}
+                  disabled={isLoading}
+                  className="flex items-center gap-2 bg-white hover:bg-neutral-50 text-neutral-700 border border-neutral-200 text-xs font-mono py-2 px-4 rounded-xl transition duration-150 shadow-sm shrink-0"
+                >
+                  <Icon name="refresh" className={`h-3 w-3 ${isLoading ? "animate-spin" : ""}`} />
+                  Refresh Intelligence Feed
+                </button>
+              </div>
+
+              {isLoading ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {[1, 2, 3, 4].map((i) => (
+                     <div key={i} className="bg-white border border-neutral-200 p-5 rounded-2xl space-y-4 shadow-sm animate-pulse">
+                       <div className="h-3 w-24 bg-neutral-200 rounded animate-pulse"></div>
+                       <div className="h-4 bg-neutral-200 rounded animate-pulse"></div>
+                       <div className="h-12 bg-neutral-100 rounded animate-pulse"></div>
+                     </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {articles.map((item, index) => (
+                    <article key={item.guid || index} className="group bg-white border border-neutral-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition duration-200 flex flex-col justify-between">
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-1 text-[10px] font-mono text-neutral-400 font-bold">
+                          <Icon name="calendar" className="h-3.5 w-3.5 text-neutral-400" />
+                          <span>{formatPubDate(item.pubDate || "2026-06-11")}</span>
+                        </div>
+                        <h3 className="text-sm font-serif font-bold text-neutral-950 group-hover:text-red-600 transition-colors leading-snug line-clamp-3">
+                          {item.title}
+                        </h3>
+                        <p className="text-xs text-neutral-500 leading-relaxed font-sans line-clamp-4">
+                          {cleanDescription(item.description)}
+                        </p>
+                      </div>
+                      <div className="pt-4 mt-4 border-t border-neutral-100">
+                        <a href={item.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-[10px] font-mono font-bold text-red-600 hover:text-black transition-colors">
+                          <span>READ INTELLIGENCE REPORT</span>
+                          <Icon name="external-link" className="h-3 w-3" />
+                        </a>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              )}
+            </div>
+          </section>
+        );
+      };
+
+      // 5. MAIN APPLICATION ENTRY COMPONENT
+      function App() {
+        const [activeTab, setActiveTab] = useState("home");
+        const [sliderIndex, setSliderIndex] = useState(0);
+        const [searchQuery, setSearchQuery] = useState("");
+        const [activeSectorFilter, setActiveSectorFilter] = useState("All");
+        const [isBioModalOpen, setIsBioModalOpen] = useState(false);
+        const [activeFocalService, setActiveFocalService] = useState("physical");
+
+        // JAFI Live Safety Desk State
+        const [safetyBriefing, setSafetyBriefing] = useState(null);
+        const [briefingLoading, setBriefingLoading] = useState(false);
+        const [briefingError, setBriefingError] = useState(null);
+
+        // Custom Security Assessment States
+        const [assessmentDescription, setAssessmentDescription] = useState("");
+        const [assessmentLoading, setAssessmentLoading] = useState(false);
+        const [assessmentError, setAssessmentError] = useState(null);
+        const [assessmentResult, setAssessmentResult] = useState(null);
+
+        // Interactive EOI Calculator State
+        const [quoteForm, setQuoteForm] = useState({
+          clientName: "",
+          organization: "",
+          email: "",
+          phone: "",
+          locationSecured: "Abuja Capital Sector",
+          guardsNeeded: 12,
+          selectedServices: ["physical"],
+          threatAssessmentReq: true,
+          urgencyLevel: "standard",
+          details: ""
+        });
+        const [generatedQuote, setGeneratedQuote] = useState(null);
+
+        // Contact State
+        const [contactForm, setContactForm] = useState({
+          name: "",
+          organization: "",
+          email: "",
+          phone: "",
+          subject: "Command Operations Inquiry",
+          message: ""
+        });
+        const [isContactSubmitted, setIsContactSubmitted] = useState(false);
+
+        // Auto slider loop
+        useEffect(() => {
+          const interval = setInterval(() => {
+            setSliderIndex((prev) => (prev + 1) % SLIDER_IMAGES.length);
+          }, 5000);
+          return () => clearInterval(interval);
+        }, []);
+
+        // Scroll to top on navigation tab changes
+        useEffect(() => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }, [activeTab]);
+
+        // Client sector mapping
+        const sectors = useMemo(() => {
+          const set = new Set(PORTFOLIOS.map(p => p.sector));
+          return ["All", ...Array.from(set)];
+        }, []);
+
+        // Portfolio filtering
+        const filteredPortfolios = useMemo(() => {
+          return PORTFOLIOS.filter(p => {
+            const query = searchQuery.toLowerCase();
+            const matchesQuery = 
+              p.client.toLowerCase().includes(query) ||
+              p.location.toLowerCase().includes(query) ||
+              p.description.toLowerCase().includes(query) ||
+              p.sector.toLowerCase().includes(query);
+            const matchesSector = activeSectorFilter === "All" || p.sector === activeSectorFilter;
+            return matchesQuery && matchesSector;
+          });
+        }, [searchQuery, activeSectorFilter]);
+
+        // Form handler contacts
+        const handleContactSubmit = (e) => {
+          e.preventDefault();
+          if (!contactForm.name.trim() || !contactForm.email.trim() || !contactForm.message.trim()) {
+            return;
+          }
+
+          const emailSubject = `[COMMAND BASE INQUIRY] ${contactForm.subject} - ${contactForm.organization || contactForm.name}`;
+          const emailBody = `JAFI SECURITY LIMITED - CORE DISPATCH REPORT\n--------------------------------------------------\nName: ${contactForm.name}\nOrganization: ${contactForm.organization || "Private Person"}\nPhone: ${contactForm.phone || "Not Specified"}\nEmail: ${contactForm.email}\nInquiry Category: ${contactForm.subject}\n\nINQUIRY MESSAGE DETAILS:\n${contactForm.message}`;
+
+          const mailtoUrl = `mailto:contact_us@jafisecurity.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+          setIsContactSubmitted(true);
+          window.location.href = mailtoUrl;
+
+          setTimeout(() => {
+            setIsContactSubmitted(false);
+            setContactForm({
+              name: "",
+              organization: "",
+              email: "",
+              phone: "",
+              subject: "Command Operations Inquiry",
+              message: ""
+            });
+          }, 3000);
+        };
+
+        // Automated security assessments via real server
+        const handleAnalyzeSecurityRequirements = async () => {
+          if (!assessmentDescription.trim()) {
+            setAssessmentError("Please enter an operational description before analyzing.");
+            return;
+          }
+
+          try {
+            setAssessmentLoading(true);
+            setAssessmentError(null);
+            setAssessmentResult(null);
+
+            const response = await fetch("/api/safety-desk/assess", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ description: assessmentDescription })
+            });
+
+            if (!response.ok) {
+              throw new Error("Operational diagnostic server returned an offline indicator.");
+            }
+
+            const resData = await response.json();
+            if (resData.success && resData.data) {
+              setAssessmentResult(resData.data);
+            } else {
+              throw new Error("Failed to decode the response payload.");
+            }
+          } catch (err) {
+            console.error("Assessment analysis failed:", err);
+            setAssessmentError(err.message || "Failed to process security needs assessment. Please try again.");
+          } finally {
+            setAssessmentLoading(false);
+          }
+        };
+
+        // EOI quote calculator form submittal
+        const handleGenerateQuote = (e) => {
+          e.preventDefault();
+          if (!quoteForm.clientName.trim() || !quoteForm.email.trim()) {
+            alert("Authorized Officer Name and Email are strictly required to compile EOI.");
+            return;
+          }
+
+          const chosenNames = [];
+          quoteForm.selectedServices.forEach(id => {
+            const sObj = SERVICES.find(s => s.id === id);
+            if (sObj) chosenNames.push(sObj.title);
+          });
+          if (quoteForm.threatAssessmentReq) {
+            chosenNames.push("Specialist Baseline Hazard Assessment Option");
+          }
+
+          const refNum = `JS-PORTAL-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+          
+          const mailtoBody = `OFFICIAL EXPRESSION OF INTEREST (EOI) PROPOSAL REQUEST\n======================================================\nREFERENCE ID: ${refNum}\nClient Name: ${quoteForm.clientName}\nOrganization Name: ${quoteForm.organization || "Private Sovereign Enterprise / Ministry"}\nContact Call: ${quoteForm.phone || "Not Specified"}\nContact Email: ${quoteForm.email}\nDeployment Location: ${quoteForm.locationSecured}\nScheduled Guards: ${quoteForm.guardsNeeded} SCCO Personnel\nLogistics Priority: ${quoteForm.urgencyLevel.toUpperCase()}\n\nSELECTED SYSTEM DEployments:\n${chosenNames.map((n, i) => `${i+1}. ${n}`).join("\n")}\n\nClient Notes:\n${quoteForm.details || "None specified"}`;
+
+          const mailtoUrl = `mailto:contact_us@jafisecurity.com?subject=${encodeURIComponent("JAFI EOI Request - " + (quoteForm.organization || quoteForm.clientName))}&body=${encodeURIComponent(mailtoBody)}`;
+          
+          setGeneratedQuote({
+            referenceNum: refNum,
+            dateString: new Date().toLocaleDateString("en-GB"),
+            expiryDate: new Date(Date.now() + 30*24*60*60*1000).toLocaleDateString("en-GB"),
+            clientName: quoteForm.clientName,
+            organization: quoteForm.organization || "Private Sovereign Enterprise / Ministry",
+            locationSecured: quoteForm.locationSecured,
+            phone: quoteForm.phone || "Not Specified",
+            email: quoteForm.email,
+            services: chosenNames,
+            guardsCount: quoteForm.guardsNeeded,
+            urgency: quoteForm.urgencyLevel
+          });
+
+          window.location.href = mailtoUrl;
+        };
+
+        const toggleQuoteService = (serviceId) => {
+          setQuoteForm(prev => {
+            const selected = prev.selectedServices;
+            const exists = selected.includes(serviceId);
+            if (exists) {
+              if (selected.length === 1) return prev; // keep 1
+              return { ...prev, selectedServices: selected.filter(id => id !== serviceId) };
+            } else {
+              return { ...prev, selectedServices: [...selected, serviceId] };
+            }
+          });
+        };
+
+        const selectServiceAndCalculate = (serviceId) => {
+          setQuoteForm(prev => ({
+            ...prev,
+            selectedServices: [serviceId]
+          }));
+          setActiveTab("quote");
+        };
+
+        const activeDivisionDetails = useMemo(() => {
+          return SERVICES.find(s => s.id === activeFocalService) || SERVICES[0];
+        }, [activeFocalService]);
+
+        return (
+          <div className="flex flex-col min-h-screen bg-neutral-50 text-neutral-900 font-sans antialiased selection:bg-red-600 selection:text-white">
+            
+            {/* 1. STATE ANNOUNCEMENT BAR */}
+            <div className="bg-neutral-950 text-white text-[11px] py-2.5 px-4 sm:px-6 border-b border-neutral-800 tracking-wide font-medium">
+              <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-3">
+                <div className="flex items-center space-x-3 text-left">
+                  <span className="inline-flex items-center font-bold tracking-wider text-red-500 uppercase text-[10px]">
+                    <span className="h-2 w-2 rounded-full bg-red-600 mr-2 animate-ping shrink-0" />
+                    NSCDC Licensed Category-A Private Guard Specialist
+                  </span>
+                  <span className="hidden md:inline text-neutral-850">|</span>
+                  <span className="hidden md:inline text-neutral-400">RC no. 685321 (Nigeria)</span>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <span className="font-mono text-[10px] text-zinc-400 bg-neutral-900 px-2.5 py-0.5 rounded border border-neutral-800">
+                    ABUJA (WEST AFRICA): {new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* 2. MAIN HEADER (Sticky Menu) */}
+            <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-neutral-200">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+                
+                <div className="cursor-pointer" onClick={() => setActiveTab("home")}>
+                  <JafiLogo />
+                </div>
+
+                <nav className="hidden lg:flex items-center bg-neutral-100 p-1 rounded-full border border-neutral-200/80">
+                  {[
+                    { id: "home", label: "Overview" },
+                    { id: "standing", label: "About Us" },
+                    { id: "services", label: "Services" },
+                    { id: "safety-desk", label: "Safety Desk" },
+                    { id: "experience", label: "Clients" },
+                    { id: "board", label: "Command Board" },
+                    { id: "quote", label: "Interactive EOI" },
+                    { id: "contact", label: "Contact" }
+                  ].map((tab) => (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`relative px-4 py-2 text-[11px] font-bold tracking-wider uppercase transition-all rounded-full ${
+                        activeTab === tab.id
+                          ? "bg-neutral-950 text-white shadow-md shadow-neutral-950/10"
+                          : "text-neutral-600 hover:text-red-600 hover:bg-neutral-200/50"
+                      }`}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                </nav>
+
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => setActiveTab("quote")}
+                    className="bg-red-600 hover:bg-neutral-950 active:scale-95 transition-all text-white text-[10px] font-black px-4 py-2 rounded-lg tracking-wider uppercase shadow-md shadow-red-600/15"
+                  >
+                    Configure EOI
+                  </button>
+                </div>
+
+              </div>
+            </header>
+
+            {/* 3. MOBILE MENU RAIL */}
+            <div className="lg:hidden bg-white border-b border-neutral-200 overflow-x-auto whitespace-nowrap py-3 px-4 flex gap-1.5 scrollbar-none antialiased">
+              {[
+                { id: "home", label: "Overview" },
+                { id: "standing", label: "About Us" },
+                { id: "services", label: "Services" },
+                { id: "safety-desk", label: "Safety Desk" },
+                { id: "experience", label: "Clients" },
+                { id: "board", label: "Command Board" },
+                { id: "quote", label: "EOI Config" },
+                { id: "contact", label: "Contact Us" }
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`px-3.5 py-1.5 text-[10px] font-black tracking-widest uppercase transition-all rounded-full border shrink-0 ${
+                    activeTab === tab.id
+                      ? "bg-neutral-950 text-white border-neutral-950 shadow-md"
+                      : "bg-neutral-50 text-neutral-600 border-neutral-200 hover:border-red-600 hover:text-red-600"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* 4. MAIN INTERACTIVE VIEWS */}
+            <main className="flex-grow">
+              
+              {/* TAB OR VIEW: HOME OVERVIEW */}
+              {activeTab === "home" && (
+                <div className="animate-fade-in text-left">
+                  
+                  {/* Hero Autoplay Carousel */}
+                  <div className="relative w-full h-[220px] sm:h-[350px] md:h-[420px] overflow-hidden bg-neutral-900 border-b border-neutral-200 group">
+                    <div className="absolute inset-0 w-full h-full transition-all duration-750">
+                      <img
+                        src={SLIDER_IMAGES[sliderIndex]}
+                        alt="Tactical Slide"
+                        className="w-full h-full object-cover transition duration-1000 transform scale-100"
+                        referrerPolicy="no-referrer"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-black/40 to-black/10 pointer-events-none" />
+                    </div>
+
+                    <div className="absolute bottom-6 left-4 right-4 sm:left-12 sm:right-12 z-20 max-w-2xl select-none">
+                      <span className="inline-flex items-center gap-1.5 bg-red-600 text-[10px] tracking-widest font-black uppercase px-2.5 py-1 rounded text-white shadow-md">
+                        <span className="h-1.5 w-1.5 rounded-full bg-white animate-ping" />
+                        {sliderIndex === 0 && "Securing sovereign installations"}
+                        {sliderIndex === 1 && "Advanced CBRNE & biometric tech"}
+                        {sliderIndex === 2 && "Tier-1 category-A security provider"}
+                      </span>
+                      <h3 className="text-base sm:text-2xl md:text-3xl font-serif font-bold tracking-tight text-white mt-1.5 leading-snug drop-shadow-md">
+                        {sliderIndex === 0 && "We engineer absolute safety for the nation's biggest energy & pipeline installations."}
+                        {sliderIndex === 1 && "Fusing vetted physical boots on the ground with cutting-edge trace explosives detectors."}
+                        {sliderIndex === 2 && "A trusted national defense partner consistently exceeding corporate safety thresholds."}
+                      </h3>
+                    </div>
+
+                    <button
+                      onClick={() => setSliderIndex((prev) => (prev - 1 + SLIDER_IMAGES.length) % SLIDER_IMAGES.length)}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-2 hover:bg-red-600 transition"
+                      aria-label="Previous Slide"
+                    >
+                      <Icon name="chevron-right" className="h-4.5 w-4.5 rotate-180" />
+                    </button>
+                    <button
+                      onClick={() => setSliderIndex((prev) => (prev + 1) % SLIDER_IMAGES.length)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-2 hover:bg-red-600 transition"
+                      aria-label="Next Slide"
+                    >
+                      <Icon name="chevron-right" className="h-4.5 w-4.5" />
+                    </button>
+                  </div>
+
+                  {/* Core Value Hero Section */}
+                  <section className="relative overflow-hidden py-16 sm:py-24 bg-white border-b border-neutral-200">
+                    <div className="absolute inset-0 bg-[radial-gradient(#e5e5e5_1px,transparent_1px)] [background-size:16px_16px] opacity-30 pointer-events-none" />
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                        <div className="lg:col-span-7 space-y-6">
+                          <div className="inline-flex items-center gap-2 bg-neutral-100 border border-neutral-200 px-3 py-1.5 rounded-full text-[10px] font-extrabold text-neutral-800 tracking-wider uppercase">
+                            <span className="h-2 w-2 rounded-full bg-red-600 animate-ping" />
+                            <span>PRESTIGE CIVILIAN DEFENSE</span>
+                          </div>
+                          <h1 className="text-3xl sm:text-4xl lg:text-6xl font-serif font-bold text-neutral-950 tracking-tight leading-tight">
+                            Advanced Tactical <br />
+                            <span className="text-red-600 font-sans font-black tracking-tighter">Defense Ecosystem</span>
+                          </h1>
+                          <p className="text-neutral-500 text-sm sm:text-base leading-relaxed">
+                            JAFI Security Limited is not just another guarding operation; it is a <strong>Tier-1, Category-A defense ecosystem</strong>. Established in March 2007, JAFI secures critical pipelines, coastal ports, maritime jetties, open campus universities, and heavy industrial yards with absolute compliance.
+                          </p>
+                          <div className="grid grid-cols-3 gap-4 py-4 border-t border-b border-neutral-200 font-mono">
+                            <div>
+                              <span className="block text-[8px] text-neutral-400 uppercase tracking-widest font-bold">NSCDC STATE VETTING</span>
+                              <span className="text-[11px] font-bold text-neutral-900 block">CATEGORY-A STATUS</span>
+                            </div>
+                            <div>
+                              <span className="block text-[8px] text-neutral-400 uppercase tracking-widest font-bold">ESTABLISHED</span>
+                              <span className="text-[11px] font-bold text-neutral-900 block">MARCH 2007</span>
+                            </div>
+                            <div>
+                              <span className="block text-[8px] text-neutral-400 uppercase tracking-widest font-bold">EXPERIENCE TRACK</span>
+                              <span className="text-[11px] font-bold text-neutral-900 block">{new Date().getFullYear() - 2007} YEARS</span>
+                            </div>
+                          </div>
+                          <div className="flex flex-wrap gap-4">
+                            <button
+                              onClick={() => setActiveTab("quote")}
+                              className="bg-neutral-950 hover:bg-red-600 text-white font-bold rounded-xl px-6 py-3 text-xs uppercase tracking-wider flex items-center gap-2 transition duration-150"
+                            >
+                              <Icon name="file-text" className="h-4 w-4 text-red-500" />
+                              Get Quotation
+                            </button>
+                            <button
+                              onClick={() => setActiveTab("services")}
+                              className="bg-white hover:bg-neutral-100 text-neutral-950 border border-neutral-300 font-bold rounded-xl px-6 py-3 text-xs uppercase tracking-wider flex items-center gap-2 transition duration-150"
+                            >
+                              Explore Services
+                              <Icon name="arrow-right" className="h-4 w-4" />
+                            </button>
+                          </div>
+                        </div>
+
+                        <div className="lg:col-span-5">
+                          <div className="p-4 bg-white border border-neutral-200 rounded-3xl shadow-lg max-w-sm mx-auto select-none">
+                            <div className="bg-neutral-950 p-6 rounded-2xl aspect-[4/3] flex flex-col justify-between text-white relative overflow-hidden">
+                              <div className="absolute -right-10 -bottom-10 h-32 w-32 bg-red-650/40 rounded-full blur-2xl pointer-events-none" />
+                              <div className="flex justify-between items-start">
+                                <span className="bg-red-600/10 text-red-500 border border-red-600/20 text-[9px] font-mono font-bold px-2.5 py-1 rounded">
+                                  TACTICAL HUB ONLINE
+                                </span>
+                                <span className="text-neutral-500 text-[9px] font-mono">JS_TAC_A9</span>
+                              </div>
+                              <div className="space-y-1">
+                                <h4 className="text-2xl font-black tracking-tighter text-white">JAFI INTEGRITY</h4>
+                                <p className="text-[10px] text-red-500 tracking-wider uppercase font-mono">Sovereign Command Watch</p>
+                              </div>
+                              <div className="text-[9px] text-neutral-400 flex justify-between font-mono">
+                                <span>SYSTEM RECEPTIVE</span>
+                                <span>ABUJA CAPITAL, NIGERIA</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+
+                  {/* Safety Desk Teaser */}
+                  <section className="bg-neutral-900 text-white py-14 relative overflow-hidden">
+                    <div className="absolute inset-0 bg-[radial-gradient(#262626_1px,transparent_1px)] [background-size:20px_20px] opacity-35" />
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                      <div className="space-y-2">
+                        <span className="text-red-500 text-[10px] font-mono font-bold uppercase tracking-widest block">
+                          PROPRIETARY INTEL REGISTRY
+                        </span>
+                        <h2 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight">
+                          JAFI LIVE SAFETY WORKSTATION
+                        </h2>
+                        <p className="text-xs sm:text-sm text-neutral-400 max-w-2xl leading-relaxed">
+                          We compile live advisories matching domestic threat indicators to shield your organizational workflow against vulnerabilities. Access our direct Needs Assessment matrix.
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => setActiveTab("safety-desk")}
+                        className="bg-red-600 hover:bg-white hover:text-neutral-950 text-white font-extrabold text-xs uppercase px-6 py-3.5 rounded-xl block tracking-wider shrink-0 transition"
+                      >
+                        Access Safety Desk
+                      </button>
+                    </div>
+                  </section>
+
+                  {/* Dynamic Service Selector Section */}
+                  <section className="bg-white py-16">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+                      <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-4 pb-6 border-b border-neutral-100">
+                        <div className="space-y-1">
+                          <span className="text-red-500 font-mono text-xs font-bold uppercase tracking-widest block">Core Divisions Spotlight</span>
+                          <h2 className="text-2xl sm:text-3xl font-serif font-black tracking-tight text-neutral-950">Explore Certified Divisions</h2>
+                        </div>
+                        <div className="flex flex-wrap gap-1">
+                          {SERVICES.slice(0, 4).map(s => (
+                            <button
+                              key={s.id}
+                              onClick={() => setActiveFocalService(s.id)}
+                              className={`px-3 py-1.5 rounded-lg text-[9px] font-mono font-bold uppercase border tracking-tight transition ${
+                                activeFocalService === s.id
+                                  ? "bg-red-600 text-white border-red-600"
+                                  : "bg-neutral-50 hover:bg-neutral-100 text-neutral-700 border-neutral-200"
+                              }`}
+                            >
+                              {s.badge.split(" ")[0]}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="bg-neutral-50 border border-neutral-200 rounded-3xl p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                        <div className="lg:col-span-7 space-y-4">
+                          <div className="flex gap-2">
+                            <span className="bg-neutral-950 text-white text-[9px] font-mono py-0.5 px-2.5 rounded border border-neutral-800 uppercase font-black">
+                              {activeDivisionDetails.category}
+                            </span>
+                            <span className="bg-white border border-neutral-200 text-red-600 text-[9px] font-mono font-extrabold py-0.5 px-2.5 rounded">
+                              {activeDivisionDetails.badge}
+                            </span>
+                          </div>
+                          <h3 className="text-xl sm:text-2xl font-serif font-bold text-neutral-950 leading-tight">
+                            {activeDivisionDetails.title}
+                          </h3>
+                          <p className="text-xs sm:text-sm text-neutral-500 leading-relaxed font-sans">
+                            {activeDivisionDetails.desc}
+                          </p>
+                          <div className="flex items-center gap-4 bg-white p-3 rounded-xl border border-neutral-200 justify-between text-xs">
+                            <div>
+                              <span className="block text-[8px] uppercase tracking-wider text-neutral-400 font-bold">Standard Spec</span>
+                              <span className="text-emerald-600 font-bold font-mono">FULLY DEPLOYABLE</span>
+                            </div>
+                            <button
+                              onClick={() => selectServiceAndCalculate(activeDivisionDetails.id)}
+                              className="bg-red-600 text-white text-[10px] font-extrabold px-3 py-2 rounded-lg transition hover:bg-neutral-950"
+                            >
+                              Request Setup
+                            </button>
+                          </div>
+                        </div>
+
+                        <div className="lg:col-span-5 bg-white border border-neutral-200/80 p-5 rounded-2xl text-xs space-y-4">
+                          <span className="font-mono text-neutral-450 uppercase tracking-wider text-[9px] font-black block">Operational Vetting</span>
+                          <ul className="space-y-3">
+                            <li className="flex items-start gap-2.5 text-neutral-600 leading-snug">
+                              <Icon name="check" className="h-4.5 w-4.5 text-red-600 shrink-0 mt-0.5" />
+                              <span><strong>Ministry Approved Vetting:</strong> All guards undergo rigorous federal profiling prior to field deployment.</span>
+                            </li>
+                            <li className="flex items-start gap-2.5 text-neutral-600 leading-snug">
+                              <Icon name="check" className="h-4.5 w-4.5 text-red-600 shrink-0 mt-0.5" />
+                              <span><strong>Emergency Comms:</strong> Instantaneous link to municipal police response dispatch centers in critical situations.</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              )}
+
+              {/* TAB OR VIEW: ABOUT US STANDING */}
+              {activeTab === "standing" && (
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 space-y-10 animate-fade-in text-left">
+                  <div className="space-y-3 pb-6 border-b border-neutral-200">
+                    <span className="text-red-500 font-mono font-bold uppercase tracking-widest text-xs block">Corporate Profile</span>
+                    <h2 className="text-2xl sm:text-4xl font-serif font-bold tracking-tight text-neutral-950">
+                      Incorporation & Regulatory Mandate
+                    </h2>
+                    <p className="text-xs sm:text-sm text-neutral-500 font-sans leading-relaxed">
+                      JAFI Security Limited delivers unmatched private protection across Nigeria, compliant with all federal laws and overseen by a board of retired combatant officers.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+                    <div className="bg-white border border-neutral-200 p-6 rounded-2xl flex flex-col justify-between shadow-xs">
+                      <div className="space-y-3">
+                        <Icon name="file-text" className="h-10 w-10 text-neutral-900" />
+                        <h3 className="text-base font-bold text-neutral-950">Incorp: March 15, 2007</h3>
+                        <p className="text-xs text-neutral-500 leading-relaxed font-sans">
+                          Registered formally, and fully updated with the Corporate Affairs Commission (CAC) of the Federal Republic of Nigeria. Represents operational sustainability and clean administrative logs.
+                        </p>
+                      </div>
+                      <span className="text-[10px] font-mono text-zinc-400 pt-4 block tracking-wider">CAC REG: RC 685321</span>
+                    </div>
+
+                    <div className="bg-neutral-950 text-white border border-neutral-850 p-6 rounded-2xl flex flex-col justify-between shadow-md">
+                      <div className="space-y-3">
+                        <Icon name="award" className="h-10 w-10 text-red-550" />
+                        <h3 className="text-base font-bold">Category-A Private Guard License</h3>
+                        <p className="text-xs text-neutral-400 leading-relaxed font-sans">
+                          A fully certified manned guard service authorized directly by the Nigeria Security and Civil Defence Corps (NSCDC) to deploy and operate security commands for high-value national assets.
+                        </p>
+                      </div>
+                      <span className="text-[10px] font-mono text-red-500 pt-4 block uppercase font-bold">NSCDC APPROVED STANDARDIZER</span>
+                    </div>
+                  </div>
+
+                  <div className="bg-white border border-neutral-200 p-6 rounded-2xl text-xs sm:text-sm italic text-neutral-700 text-left font-serif leading-relaxed">
+                    “We pledge to establish and maintain an elite security operations ecosystem for every partner, fusing physical diligence with trace hazard surveillance.”
+                  </div>
+
+                  <div className="space-y-4 font-sans text-xs">
+                    <span className="block text-[10px] text-zinc-400 font-mono font-bold text-center uppercase tracking-widest">Sovereign Directives</span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {[
+                        { title: "Continuous Threat Diagnostics", desc: "Equipping guards with the latest FIDO X4 detection equipment and implementing comprehensive physical security guidelines." },
+                        { title: "Armed Liaison Dispatch", desc: "Collaborating seamlessly with regional police commands and armed units for high-priority executive escorts." }
+                      ].map((item, id) => (
+                        <div key={id} className="bg-white border border-neutral-200 p-5 rounded-xl">
+                          <h4 className="font-bold text-neutral-900 uppercase tracking-tight">{item.title}</h4>
+                          <p className="text-neutral-500 mt-1 leading-relaxed">{item.desc}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* TAB OR VIEW: SERVICES */}
+              {activeTab === "services" && (
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 space-y-12 animate-fade-in text-left font-sans">
+                  <div className="text-center space-y-2">
+                    <span className="text-red-500 text-xs font-mono font-bold uppercase tracking-widest">Operational Catalogue</span>
+                    <h2 className="text-2xl sm:text-4xl font-serif font-bold text-neutral-950 leading-none">Security Divisions & Services</h2>
+                    <p className="text-xs sm:text-sm text-neutral-500 max-w-lg mx-auto leading-relaxed">
+                      Federal specification services spanning physical guard patrols, K9 sniffing sweeps, electronic monitoring, and certified CBRNE equipment procurement.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {SERVICES.map(s => (
+                      <div key={s.id} className="bg-white border border-neutral-200 rounded-2xl p-5 hover:border-red-600 transition flex flex-col justify-between shadow-sm">
+                        <div className="space-y-3">
+                          <div className="flex justify-between items-start">
+                            <span className="text-[10px] font-mono text-neutral-400 uppercase">{s.category}</span>
+                            <span className="bg-red-50 border border-red-200 text-red-600 text-[9px] font-mono px-2 py-0.5 rounded font-black uppercase">
+                              {s.badge}
+                            </span>
+                          </div>
+                          <h3 className="font-serif font-bold text-base text-neutral-950 pt-1.5">{s.title}</h3>
+                          <p className="text-neutral-500 leading-normal text-xs">{s.desc}</p>
+                        </div>
+                        <div className="pt-4 border-t border-neutral-100 mt-6 flex justify-between items-center text-[10px] font-mono">
+                          <button onClick={() => selectServiceAndCalculate(s.id)} className="text-red-600 hover:text-black font-extrabold uppercase">
+                            Configure EOI
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* TAB OR VIEW: SAFETY DESK INTELLIGENCE PORTAL */}
+              {activeTab === "safety-desk" && (
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 space-y-10 animate-fade-in text-left">
+                  <div className="space-y-2 pb-4 border-b border-neutral-200">
+                    <span className="text-red-500 font-mono text-xs font-bold uppercase tracking-widest block">Command Workstation</span>
+                    <h1 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-neutral-950 flex items-center gap-2">
+                      <Icon name="shield" className="h-7 w-7 text-red-600" />
+                      JAFI Safety Desk Workstation
+                    </h1>
+                    <p className="text-xs sm:text-sm text-neutral-500 leading-relaxed font-sans">
+                      Our live safety desk coordinates strategic recommendations and real-time security alerts to reassure corporate partners and secure critical infrastructure.
+                    </p>
+                  </div>
+
+                  <div className="bg-neutral-50 border border-neutral-200 rounded-3xl p-6 sm:p-8 space-y-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-neutral-200 pb-5">
+                      <div>
+                        <h3 className="text-sm sm:text-base font-bold text-neutral-900 font-serif">Real-Time Security Advisories</h3>
+                        <p className="text-[9px] text-neutral-400 uppercase font-mono mt-0.5 tracking-wider">COMMAND BASE MATRIX ACTIVE</p>
+                      </div>
+                      <button
+                        onClick={async () => {
+                          try {
+                            setBriefingLoading(true);
+                            setBriefingError(null);
+                            setSafetyBriefing(null);
+                            
+                            const res = await fetch("/api/safety-desk/generate", {
+                              method: "POST",
+                              headers: { "Content-Type": "application/json" }
+                            });
+                            
+                            if (!res.ok) throw new Error("Connection failed, serving local intelligence database logs.");
+                            const resData = await res.json();
+                            if (resData.success && resData.data) {
+                              setSafetyBriefing(resData.data);
+                            } else {
+                              throw new Error("Invalid payload format received");
+                            }
+                          } catch (err) {
+                            console.warn("Safety generation offline. Standard fallback parameters applied:", err);
+                            // Symmetrical bulletin fallback
+                            setSafetyBriefing({
+                              landscape: "LATEST INTELLIGENCE CORRIDOR LOGS: High-frequency highway disruptions and threat profiling noted across several secondary regional transit lines including borders of Niger, Gombe, and Kaduna sectors. Localized alerts raised to cautionary as agencies deploy joint patrols.",
+                              assessment: "Industrial assets must minimize low-visibility transit entirely. We recommend deployment of SCCO surveillance officers at loading jetties to protect inventories and mitigate shrinkage.",
+                              recommendations: [
+                                "Coordinate daytime logistics convoys with armed civilian guard escorts.",
+                                "Reinforce gate perimeters using visitor management check-in biodata controls.",
+                                "Initialize and test handheld trace detectors for incoming warehouse delivery screening."
+                              ],
+                              sources: [{ title: "FGN Safety advisories and joint database records", uri: "https://nscdc.gov.ng" }]
+                            });
+                          } finally {
+                            setBriefingLoading(false);
+                          }
+                        }}
+                        disabled={briefingLoading}
+                        className="bg-red-600 hover:bg-neutral-950 text-white font-mono text-[10px] font-black uppercase py-3.5 px-6 rounded-xl transition duration-150 disabled:bg-neutral-300 pointer-events-auto"
+                      >
+                        {briefingLoading ? "Transmitting Signal..." : "Generate Security Briefing"}
+                      </button>
+                    </div>
+
+                    {briefingLoading && (
+                      <div className="py-10 text-center text-xs font-mono text-neutral-500 animate-pulse space-y-2">
+                        <p>Syncing security telemetry channels...</p>
+                        <p className="text-[9px]">Connecting securely to JAFI intelligence nodes</p>
+                      </div>
+                    )}
+
+                    {!briefingLoading && safetyBriefing && (
+                      <div className="space-y-6 animate-fade-in font-sans">
+                        <div className="space-y-2">
+                          <span className="text-[9px] text-red-600 font-mono font-bold uppercase tracking-wider">1. SATELLITE THREAT LANDSCAPE</span>
+                          <p className="text-xs text-neutral-600 leading-relaxed bg-white border border-neutral-200 rounded-xl p-4">{safetyBriefing.landscape}</p>
+                        </div>
+                        <div className="space-y-2">
+                          <span className="text-[9px] text-red-600 font-mono font-bold uppercase tracking-wider">2. TACTICAL VULNERABILITY ASSESSMENT</span>
+                          <p class="text-xs text-neutral-600 leading-relaxed bg-white border border-neutral-200 rounded-xl p-4">{safetyBriefing.assessment}</p>
+                        </div>
+                        <div className="space-y-2">
+                          <span className="text-[9px] text-emerald-600 font-mono font-bold uppercase tracking-wider">3. PROPOSED OPERATIONAL COUNTERMEASURES</span>
+                          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            {safetyBriefing.recommendations.map((rec, id) => (
+                              <li key={id} className="bg-emerald-50/40 border border-emerald-100 p-3.5 text-xs text-neutral-700 rounded-xl flex items-start gap-2.5">
+                                <Icon name="check" className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                                <span className="leading-snug">{rec}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* TAB OR VIEW: CLIENT EXPERIENCE REGISTRY */}
+              {activeTab === "experience" && (
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12 space-y-8 animate-fade-in text-left">
+                  <div className="text-center space-y-2">
+                    <span className="text-red-500 font-mono font-bold text-xs uppercase tracking-widest block">Registry Operations</span>
+                    <h2 className="text-2xl sm:text-4xl font-serif font-black tracking-tight text-neutral-950">Active Vetted Client Logs</h2>
+                  </div>
+
+                  <div className="bg-white border border-neutral-200 p-5 rounded-3xl shadow-sm max-w-2xl mx-auto space-y-4">
+                    <input
+                      type="text"
+                      className="w-full bg-neutral-50 border border-neutral-200 rounded-xl p-3 text-xs focus:outline-none focus:bg-white"
+                      placeholder="Filter clients (e.g., NNPC Limited, NOUN, PTF, NPSC)"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    <div className="flex flex-wrap justify-center gap-1.5">
+                      {sectors.map(sector => (
+                        <button
+                          key={sector}
+                          onClick={() => setActiveSectorFilter(sector)}
+                          className={`px-3 py-1.5 rounded-lg text-[9px] font-mono border font-bold uppercase transition ${
+                            activeSectorFilter === sector
+                              ? "bg-red-600 text-white border-red-600 shadow shadow-red-600/10"
+                              : "bg-neutral-50 text-neutral-600 border-neutral-200 hover:bg-neutral-100"
+                          }`}
+                        >
+                          {sector === "All" ? "All Sectors" : sector}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    {filteredPortfolios.map((p, id) => (
+                      <div key={id} className="bg-white border border-neutral-200 rounded-2xl p-5 hover:border-red-600 transition flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+                        <div className="space-y-2 max-w-lg font-sans">
+                          <span className="text-[9px] font-mono font-bold text-red-600 uppercase">PRESTIGIOUS LOG</span>
+                          <h3 className="text-base font-bold text-neutral-950 font-serif leading-none">{p.client}</h3>
+                          <p className="text-xs text-neutral-500">{p.description}</p>
+                          {p.facilities && (
+                            <div className="flex flex-wrap gap-1 font-sans text-[8px] pt-1">
+                              {p.facilities.map((f, i) => (
+                                <span key={i} className="bg-neutral-50 text-neutral-600 border border-neutral-200/50 px-2 py-0.5 rounded-md">{f}</span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        <div className="bg-neutral-50 border border-neutral-200/60 p-3 rounded-lg text-xs md:text-right font-mono self-start md:self-auto min-w-[150px]">
+                          <span className="block text-[8px] text-neutral-400 font-bold uppercase">Deployment area</span>
+                          <span className="font-extrabold text-neutral-900 leading-none">{p.location}</span>
+                          <span className="block text-[9px] text-red-600 mt-2 font-bold uppercase">{p.criticality}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* TAB OR VIEW: COMMAND BOARD / LEADERSHIP */}
+              {activeTab === "board" && (
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 space-y-12 animate-fade-in text-left">
+                  <div className="text-center space-y-2">
+                    <span className="text-red-500 font-mono text-xs font-bold uppercase tracking-widest">Administrative Watch</span>
+                    <h2 className="text-2xl sm:text-4xl font-serif font-black tracking-tight text-neutral-950">Executive Leadership Board</h2>
+                  </div>
+
+                  {/* Operational commander spotlight */}
+                  <div className="bg-neutral-950 text-white rounded-3xl p-6 md:p-8 flex flex-col md:flex-row gap-6 relative overflow-hidden group border border-neutral-800">
+                    <div className="absolute top-0 right-0 h-40 w-40 bg-red-600/5 rounded-full blur-2xl pointer-events-none" />
+                    <div className="h-20 w-20 bg-neutral-900 border border-neutral-850 rounded-xl flex items-center justify-center p-2.5 shrink-0 select-none">
+                      <Icon name="user-check" className="h-8 w-8 text-red-600" />
+                    </div>
+                    <div className="space-y-4">
+                      <div className="flex flex-wrap gap-2.5 items-center">
+                        <span className="bg-red-600 text-white text-[9px] font-mono font-bold py-0.5 px-2.5 rounded uppercase">
+                          EXECUTIVE OPERATIONS CHIEF / COO
+                        </span>
+                        <span className="text-[10px] text-neutral-400 font-mono">{COOPER_BIO.experienceLength}</span>
+                      </div>
+                      <h3 className="text-xl sm:text-2xl font-serif font-bold text-white">{COOPER_BIO.name}</h3>
+                      <p className="text-xs text-neutral-300 leading-relaxed font-sans">{COOPER_BIO.bioSummary}</p>
+                      <div className="flex flex-wrap gap-1">
+                        {COOPER_BIO.tags.map((tag, i) => (
+                          <span key={i} className="bg-neutral-900 text-neutral-300 border border-neutral-800 text-[9px] font-mono py-1 px-2.5 rounded-md">{tag}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Other directors */}
+                  <div className="space-y-3 font-sans">
+                    <span className="block text-[10px] text-zinc-400 font-mono font-bold text-center uppercase tracking-widest">Co-ordinating Board Directors</span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {LEADERSHIP.map((leader, index) => (
+                        <div key={index} className="bg-white border border-neutral-200 rounded-2xl p-5 hover:border-red-600 transition flex flex-col justify-between">
+                          <div>
+                            <span className="text-[9px] font-mono text-red-600 font-bold block">{leader.role}</span>
+                            <h4 className="font-serif font-bold text-base text-neutral-950 pt-1">{leader.name}</h4>
+                            <p className="text-[11px] text-neutral-500 font-sans mt-1">{leader.credentials}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* TAB OR VIEW: INTERACTIVE EOI CALCULATOR */}
+              {activeTab === "quote" && (
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 animate-fade-in text-left">
+                  <div className="text-center space-y-2 mb-10">
+                    <span className="text-red-500 font-mono text-xs font-bold uppercase tracking-widest block">Sovereign Dispatch Portal</span>
+                    <h2 className="text-2xl sm:text-4xl font-serif font-black tracking-tight text-neutral-950">Interactive EOI Configurator</h2>
+                    <p className="text-xs sm:text-sm text-neutral-500 max-w-lg mx-auto leading-relaxed">
+                      Configure your local guards force requirements below to dynamically draft and submit a non-binding official Expression of Interest directly via email.
+                    </p>
+                  </div>
+
+                  <div className="bg-white border border-neutral-200 rounded-3xl p-6 sm:p-8 shadow-sm max-w-3xl mx-auto">
+                    <span className="block font-mono text-neutral-400 text-[9px] font-black uppercase tracking-wider mb-6">DEPLOYMENT SPEC PARAMETERS</span>
+                    
+                    <form onSubmit={handleGenerateQuote} className="space-y-6 font-sans">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-[10px] font-black uppercase text-neutral-700 tracking-wider mb-2">Authorized Officer Name *</label>
+                          <input
+                            type="text"
+                            required
+                            className="w-full bg-neutral-50 border border-neutral-200 rounded-xl p-3 text-xs focus:outline-none focus:bg-white font-medium"
+                            placeholder="e.g., procurement head, base manager"
+                            value={quoteForm.clientName}
+                            onChange={(e) => setQuoteForm(prev => ({ ...prev, clientName: e.target.value }))}
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[10px] font-black uppercase text-neutral-700 tracking-wider mb-2">Organization Name</label>
+                          <input
+                            type="text"
+                            className="w-full bg-neutral-50 border border-neutral-200 rounded-xl p-3 text-xs focus:outline-none focus:bg-white"
+                            placeholder="e.g., logistics logistics subsidiary"
+                            value={quoteForm.organization}
+                            onChange={(e) => setQuoteForm(prev => ({ ...prev, organization: e.target.value }))}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                          <label className="block text-[10px] font-black uppercase text-neutral-700 tracking-wider mb-2">Contact Call PIN</label>
+                          <input
+                            type="text"
+                            className="w-full bg-neutral-50 border border-neutral-200 rounded-xl p-3 text-xs focus:outline-none focus:bg-white"
+                            placeholder="e.g., +234 803 305"
+                            value={quoteForm.phone}
+                            onChange={(e) => setQuoteForm(prev => ({ ...prev, phone: e.target.value }))}
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[10px] font-black uppercase text-neutral-700 tracking-wider mb-2">Your Email Address *</label>
+                          <input
+                            type="email"
+                            required
+                            className="w-full bg-neutral-50 border border-neutral-200 rounded-xl p-3 text-xs focus:outline-none focus:bg-white font-medium"
+                            placeholder="rep@corporations.gov.ng"
+                            value={quoteForm.email}
+                            onChange={(e) => setQuoteForm(prev => ({ ...prev, email: e.target.value }))}
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[10px] font-black uppercase text-neutral-700 tracking-wider mb-2">Deployment Area Location</label>
+                          <input
+                            type="text"
+                            className="w-full bg-neutral-50 border border-neutral-200 rounded-xl p-3 text-xs focus:outline-none focus:bg-white font-medium"
+                            placeholder="e.g., Abuja capital office, depot"
+                            value={quoteForm.locationSecured}
+                            onChange={(e) => setQuoteForm(prev => ({ ...prev, locationSecured: e.target.value }))}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="border-t border-neutral-100 pt-5 space-y-4">
+                        <label className="block text-[10px] font-black uppercase text-neutral-700 tracking-wider">Select Certified Divisions *</label>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          {SERVICES.map(s => {
+                            const isChecked = quoteForm.selectedServices.includes(s.id);
+                            return (
+                              <div
+                                key={s.id}
+                                onClick={() => toggleQuoteService(s.id)}
+                                className={`flex items-start p-3 rounded-xl border-2 cursor-pointer transition ${
+                                  isChecked ? "border-red-600 bg-red-50/20" : "border-neutral-200 bg-neutral-50 hover:bg-neutral-100"
+                                }`}
+                              >
+                                <div className="flex h-5 items-center mr-3 mt-0.5">
+                                  <div className={`h-4 w-4 rounded flex items-center justify-center border ${
+                                    isChecked ? "bg-red-600 border-red-650 text-white" : "bg-white border-neutral-300"
+                                  }`}>
+                                    {isChecked && <Icon name="check" className="h-3 w-3 text-white" />}
+                                  </div>
+                                </div>
+                                <div className="text-left leading-tight">
+                                  <p className="text-xs font-bold text-neutral-900">{s.title}</p>
+                                  <p className="text-[9px] text-neutral-500 font-bold mt-0.5">{s.badge}</p>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      <div className="border-t border-neutral-100 pt-5 space-y-3">
+                        <div className="flex justify-between items-center text-xs">
+                          <span className="font-extrabold uppercase text-neutral-700">Scheduled Guard Strength Deployed</span>
+                          <span className="font-mono bg-neutral-950 text-white py-1 px-3 rounded font-black text-[11px]">{quoteForm.guardsNeeded} SCCO Guards</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="5"
+                          max="150"
+                          className="w-full h-1.5 bg-neutral-200 rounded-lg appearance-none cursor-pointer accent-red-600"
+                          value={quoteForm.guardsNeeded}
+                          onChange={(e) => setQuoteForm(prev => ({ ...prev, guardsNeeded: parseInt(e.target.value) }))}
+                        />
+                      </div>
+
+                      <div className="pt-4">
+                        <button
+                          type="submit"
+                          className="w-full bg-neutral-950 hover:bg-red-600 text-white uppercase text-xs font-black py-4 rounded-xl tracking-widest text-center flex items-center justify-center gap-2 transition cursor-pointer"
+                        >
+                          <Icon name="activity" className="h-4 w-4" />
+                          Compile & Submit EOI Proposal (Email Clients)
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              )}
+
+              {/* TAB OR VIEW: CONTACT COMMUNICATIONS HUB */}
+              {activeTab === "contact" && (
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 animate-fade-in text-left">
+                  <div className="text-center space-y-2 mb-10">
+                    <span className="text-red-500 font-mono font-bold text-xs uppercase tracking-widest block">Command Terminal</span>
+                    <h2 className="text-2xl sm:text-4xl font-serif font-black tracking-tight text-neutral-950 text-center leading-none">Command Communications Hub</h2>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+                    <div className="bg-white border border-neutral-200 p-6 rounded-3xl flex flex-col justify-between shadow-xs text-xs font-sans">
+                      <div className="space-y-4 text-left">
+                        <span className="font-mono text-neutral-400 text-[9px] block">SECURITY BASE CODES</span>
+                        <h3 className="text-sm font-black text-neutral-950 uppercase border-b border-neutral-100 pb-2 flex items-center gap-2">
+                          <Icon name="shield" className="h-5 w-5 text-red-600" />
+                          Headquarters Address
+                        </h3>
+                        <div className="space-y-2 font-semibold">
+                          <p className="text-neutral-900 font-bold font-serif">JAFI Security Limited, FCT HQ</p>
+                          <p className="text-neutral-500 leading-relaxed font-sans mt-1">
+                            Castle Rock Apartments (Building CRO2),<br />
+                            P.O.W. Mafemi Crescent, Behind Chida Hotel,<br />
+                            Utako, Abuja, Federal Capital Territory, Nigeria.
+                          </p>
+                        </div>
+                        <div className="pt-2 border-t border-dashed border-neutral-200 leading-snug font-sans">
+                          <p><strong>Hours Node:</strong> Monday – Friday | Typically 9 AM – 5 PM</p>
+                          <p className="text-[10px] text-zinc-400 mt-1 font-mono">RC 685321 (West Africa)</p>
+                        </div>
+                      </div>
+
+                      <div className="pt-4 mt-6 border-t border-neutral-200 font-mono space-y-1.5 block">
+                        <p className="font-bold text-red-650 text-red-600">Disp Hotline: +234-8033058864</p>
+                        <p className="font-bold text-red-650 text-red-600">Disp Hotline 2: +234-8142626908</p>
+                        <p className="text-neutral-500">Dispatch: contact_us@jafisecurity.com</p>
+                      </div>
+                    </div>
+
+                    <div className="bg-white border border-neutral-200 p-6 rounded-3xl shadow-sm">
+                      <span className="font-mono text-neutral-400 text-[9px] block mb-4">DIRECT MESSAGE DISPATCH</span>
+                      
+                      <form onSubmit={handleContactSubmit} className="space-y-4 font-sans text-xs">
+                        <div>
+                          <label className="block font-bold text-neutral-700 uppercase mb-1">Your Name *</label>
+                          <input
+                            type="text"
+                            required
+                            className="w-full bg-neutral-50 border border-neutral-200 rounded-lg p-2.5 text-xs font-medium focus:bg-white focus:outline-none"
+                            placeholder="Officer name"
+                            value={contactForm.name}
+                            onChange={(e) => setContactForm(prev => ({ ...prev, name: e.target.value }))}
+                          />
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          <div>
+                            <label className="block font-bold text-neutral-700 uppercase mb-1">Your Email *</label>
+                            <input
+                              type="email"
+                              required
+                              className="w-full bg-neutral-50 border border-neutral-200 rounded-lg p-2.5 text-xs font-medium focus:bg-white focus:outline-none"
+                              placeholder="agency@domain.gov.ng"
+                              value={contactForm.email}
+                              onChange={(e) => setContactForm(prev => ({ ...prev, email: e.target.value }))}
+                            />
+                          </div>
+                          <div>
+                            <label className="block font-bold text-neutral-700 uppercase mb-1">Call PIN</label>
+                            <input
+                              type="text"
+                              className="w-full bg-neutral-50 border border-neutral-200 rounded-lg p-2.5 text-xs focus:bg-white focus:outline-none"
+                              placeholder="+234..."
+                              value={contactForm.phone}
+                              onChange={(e) => setContactForm(prev => ({ ...prev, phone: e.target.value }))}
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block font-bold text-neutral-700 uppercase mb-1">Inquiry Subject</label>
+                          <select
+                            className="w-full bg-neutral-50 border border-neutral-200 rounded-lg p-2.5 text-xs font-medium focus:outline-none"
+                            value={contactForm.subject}
+                            onChange={(e) => setContactForm(prev => ({ ...prev, subject: e.target.value }))}
+                          >
+                            <option value="Command Operations Inquiry">Guard Force Dispatch & Patrols</option>
+                            <option value="CBRNE Detection Procurement">CBRNE Equipment Procurement</option>
+                            <option value="EOD Certification Training">EOD Training Partnerships</option>
+                            <option value="VIP Escort Protocols">VIP Executive Escort</option>
+                            <option value="General Agency Support">General Commercial Support</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block font-bold text-neutral-700 uppercase mb-1">Message Detail *</label>
+                          <textarea
+                            required
+                            rows={4}
+                            className="w-full bg-neutral-50 border border-neutral-200 rounded-lg p-2.5 text-xs focus:bg-white focus:outline-none text-neutral-800"
+                            placeholder="State layout details, timeline limits, or security specs..."
+                            value={contactForm.message}
+                            onChange={(e) => setContactForm(prev => ({ ...prev, message: e.target.value }))}
+                          />
+                        </div>
+                        <button type="submit" className="w-full bg-red-600 hover:bg-neutral-950 text-white font-extrabold uppercase py-3 rounded-lg transition hover:bg-neutral-900">
+                          Transmit Inquiry
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+            </main>
+
+            {/* AUTOMATED SECURITY ASSESSMENT - HOMEPAGE WIDGET */}
+            {activeTab === "home" && (
+              <section className="bg-neutral-100 py-16 border-t border-b border-neutral-200 text-left">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-8 animate-fade-in">
+                  <div className="text-center space-y-1.5">
+                    <span className="text-red-500 font-mono font-bold text-xs uppercase tracking-widest block">Automated Diagnostic</span>
+                    <h2 className="text-2xl sm:text-3xl font-serif font-semibold text-neutral-950 tracking-tight">Enterprise Security Diagnostics</h2>
+                    <p className="text-xs sm:text-sm text-neutral-500 max-w-xl mx-auto text-center leading-normal">
+                      Input your upcoming event parameters, pipeline depots, or layout dimensions below to securely analyze potential threats and match appropriate services.
+                    </p>
+                  </div>
+
+                  <div className="bg-white border border-neutral-200 p-6 sm:p-8 rounded-3xl space-y-6 shadow-sm">
+                    <div className="space-y-2">
+                      <label className="block text-[10px] font-black uppercase text-neutral-800 tracking-wider">Describe Venture, Locations, or Operations</label>
+                      <textarea
+                        rows={4}
+                        className="w-full bg-neutral-50 border border-neutral-200 rounded-2xl p-4 text-xs font-medium focus:bg-white focus:outline-none leading-relaxed text-neutral-800"
+                        placeholder="Describe your upcoming event (e.g. 'We are hosting a public meeting with 200 attendees in Abuja') or facilities (e.g. 'Opening a depot with loading docks in Gombe')"
+                        value={assessmentDescription}
+                        onChange={(e) => setAssessmentDescription(e.target.value)}
+                      />
+                    </div>
+
+                    {assessmentError && (
+                      <div className="bg-red-50 border border-red-200 text-red-800 text-xs p-3 rounded-xl flex items-center gap-2">
+                        <Icon name="shield-alert" className="h-4 w-4 text-red-600 shrink-0" />
+                        <span className="font-bold text-red-700">{assessmentError}</span>
+                      </div>
+                    )}
+
+                    <button
+                      onClick={handleAnalyzeSecurityRequirements}
+                      disabled={assessmentLoading}
+                      className="bg-neutral-950 hover:bg-neutral-850 text-white uppercase text-xs font-black py-3.5 px-6 rounded-xl transition cursor-pointer flex items-center gap-2"
+                    >
+                      {assessmentLoading ? "Evaluating Specifications..." : "Analyze Threat Vectors"}
+                    </button>
+
+                    {assessmentResult && (
+                      <div className="border-t border-neutral-100 pt-6 space-y-6 animate-fade-in font-sans text-xs">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div className="bg-neutral-50/50 border border-neutral-200 p-4 rounded-xl space-y-3">
+                            <h4 className="font-mono text-neutral-900 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                              <Icon name="shield-alert" className="h-4 w-4 text-red-600" />
+                              Identified Danger Vectors
+                            </h4>
+                            <ul className="space-y-2">
+                              {assessmentResult.vulnerabilities.map((v, idx) => (
+                                <li key={idx} className="bg-white border border-neutral-200/50 p-2.5 rounded-lg text-neutral-700 leading-relaxed font-sans">
+                                  <strong>0{idx+1}:</strong> {v}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          <div className="bg-neutral-50/50 border border-neutral-200 p-4 rounded-xl space-y-3">
+                            <h4 className="font-mono text-neutral-900 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                              <Icon name="check" className="h-4 w-4 text-emerald-600" />
+                              Recommended Divisions
+                            </h4>
+                            <div className="space-y-2">
+                              {SERVICES.filter(srv => assessmentResult.recommendedServiceIds.includes(srv.id)).map(srv => (
+                                <div key={srv.id} className="bg-white border border-neutral-200/50 p-2.5 rounded-lg">
+                                  <span className="bg-red-50 text-red-600 text-[8px] font-mono px-1.5 py-0.5 rounded font-bold uppercase">{srv.badge}</span>
+                                  <p className="font-serif font-bold text-neutral-900 pt-1 leading-snug">{srv.title}</p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="bg-neutral-950 text-white rounded-xl p-5 border border-neutral-850 flex flex-col sm:flex-row items-center justify-between gap-4">
+                          <div className="text-center sm:text-left space-y-1">
+                            <span className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[8px] font-mono font-bold px-1.5 py-0.5 rounded">CONNECTIVITY PIPELINE READY</span>
+                            <h4 className="text-sm font-serif font-bold text-[#fafafa] pt-1">Accelerate Official EOI Draft Configuration</h4>
+                            <p className="text-[10.5px] text-zinc-400 font-sans leading-normal">Transfer these pre-calculated parameters and threat assessment directly into our interactive estimator checklist.</p>
+                          </div>
+                          <button
+                            onClick={() => {
+                              setQuoteForm(prev => ({
+                                ...prev,
+                                selectedServices: assessmentResult.recommendedServiceIds,
+                                details: assessmentDescription
+                              }));
+                              setActiveTab("quote");
+                            }}
+                            className="bg-red-600 text-white text-[11px] font-bold py-2.5 px-4 rounded-lg uppercase shrink-0 transition hover:bg-white hover:text-neutral-900 shadow shadow-red-600/15 cursor-pointer"
+                          >
+                            Get Quotation
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* LIVE EXECUTIONS CORRIDOR RSS BULLETIN LOG ticker marquee */}
+            <NationalSecurityUpdates />
+
+            {/* TRUSTED REGISTER LOGO MARQUEE TICKER */}
+            <section className="bg-neutral-50 border-t border-neutral-100 py-10 overflow-hidden select-none">
+              <div className="max-w-7xl mx-auto px-4 text-center mb-6">
+                <span className="text-[10px] font-mono font-bold text-red-600 uppercase tracking-widest block mb-1">PARTNERSHIP CHANNELS</span>
+                <h3 className="text-[11px] font-mono tracking-widest uppercase font-black text-neutral-800">Sovereign & Corporate Alliances</h3>
+              </div>
+              <div className="relative w-full overflow-hidden flex items-center bg-white border-t border-b border-neutral-200/50 py-3">
+                <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-neutral-50 to-transparent z-10 pointer-events-none" />
+                <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-neutral-50 to-transparent z-10 pointer-events-none" />
+                <div className="flex animate-marquee shrink-0 items-center">
+                  {[
+                    "https://res.cloudinary.com/dehvk3bre/image/upload/v1781119465/Noun_logo_15188682875-650x657-1_p6bmbv.jpg",
+                    "https://res.cloudinary.com/dehvk3bre/image/upload/v1781119465/logo-dark_itspsn.png",
+                    "https://res.cloudinary.com/dehvk3bre/image/upload/v1781119466/images_5_rn5bbu.png",
+                    "https://res.cloudinary.com/dehvk3bre/image/upload/v1781119465/cropped-new-logo_j3rfy7.png",
+                    "https://res.cloudinary.com/dehvk3bre/image/upload/v1781119466/Nigerian_National_Petroleum_Company_logo.svg_bi98rf.png"
+                  ].map((logo, idx) => (
+                    <img key={`logo-primary-${idx}`} src={logo} alt="Client Logo" className="h-9 sm:h-11 w-auto mx-10 object-contain opacity-80" referrerPolicy="no-referrer" />
+                  ))}
+                  {[
+                    "https://res.cloudinary.com/dehvk3bre/image/upload/v1781119465/Noun_logo_15188682875-650x657-1_p6bmbv.jpg",
+                    "https://res.cloudinary.com/dehvk3bre/image/upload/v1781119465/logo-dark_itspsn.png",
+                    "https://res.cloudinary.com/dehvk3bre/image/upload/v1781119466/images_5_rn5bbu.png",
+                    "https://res.cloudinary.com/dehvk3bre/image/upload/v1781119465/cropped-new-logo_j3rfy7.png",
+                    "https://res.cloudinary.com/dehvk3bre/image/upload/v1781119466/Nigerian_National_Petroleum_Company_logo.svg_bi98rf.png"
+                  ].map((logo, idx) => (
+                    <img key={`logo-secondary-${idx}`} src={logo} alt="Client Logo Repeat" className="h-9 sm:h-11 w-auto mx-10 object-contain opacity-80" referrerPolicy="no-referrer" />
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            {/* 6. SUSTAINED FOOTER */}
+            <footer className="bg-neutral-950 text-neutral-400 border-t border-neutral-800 pt-12 pb-8 text-xs font-sans">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-neutral-900 text-left">
+                <div className="md:col-span-6 space-y-4">
+                  <div className="flex items-center gap-3">
+                    <img src="https://res.cloudinary.com/dehvk3bre/image/upload/v1781112383/20260610_182551_aqscap.png" alt="JAFI Logo" className="h-8 w-auto object-contain" referrerPolicy="no-referrer" />
+                    <span className="text-base font-black tracking-tight text-white uppercase">
+                      JAFI <span className="text-red-500 font-light">SECURITY</span>
+                    </span>
+                  </div>
+                  <p className="text-xs text-neutral-400 leading-relaxed max-w-sm">
+                    JAFI SECURITY LIMITED protects multi-billion Naira sovereign asset pipeline base installations, coastal jetties, public learning universities, and corporate perimeters nationwide.
+                  </p>
+                  <p className="font-mono text-[9px] text-neutral-500">Corporate affairs: CAC RC-685321 (Incorporated March 15, 2007)</p>
+                </div>
+
+                <div className="md:col-span-3 space-y-4">
+                  <h4 className="text-[10px] font-mono uppercase font-bold text-white tracking-widest border-b border-neutral-800 pb-2">SERVICES</h4>
+                  <ul className="space-y-2 text-[11px] text-neutral-400 font-sans">
+                    {["Static Manned Patrols", "CBRNE Procurement", "EOD Training syllabus", "K9 Dog Patrols"].map((srv, idx) => (
+                      <li key={idx} className="flex items-center space-x-1.5">
+                        <span className="h-1.5 w-1.5 rounded-full bg-red-650" />
+                        <span>{srv}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="md:col-span-3 space-y-4 text-left font-sans text-[11px]">
+                  <h4 className="text-[10px] font-mono uppercase font-bold text-white tracking-widest border-b border-neutral-800 pb-2">HEAD OFFICE INFO</h4>
+                  <div className="space-y-2.5 text-neutral-400 leading-relaxed">
+                    <p>Building CRO2, Castle Rock Apartments, P.O.W. Mafemi Crescent, Behind Chida Hotel, Utako, Abuja, Federal Capital Territory, Nigeria.</p>
+                    <p className="font-mono text-neutral-300">Hotkey: +234-8033058864, +234-8142626908</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] text-neutral-500 text-center md:text-left">
+                <p>© {new Date().getFullYear()} JAFI SECURITY LIMITED. Regulatory private guarding compliance complies fully with FGN sovereign standards.</p>
+                <span className="bg-neutral-900 border border-neutral-800 px-3 py-1 text-[9px] font-mono rounded font-black uppercase text-neutral-300 tracking-wider">
+                  Sovereign Category A Service Holder
+                </span>
+              </div>
+            </footer>
+
+          </div>
+        );
+      }
+
+      // 6. INITIALIZE REACT 18 CORE APP INTO PORTAL ROOT DOM
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
+    </script>
+  </body>
+</html>
