@@ -4,10 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>JAFI Security Limited | Elite Defensive Shield</title>
+    <!-- Premium Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700;800;900&family=Playfair+Display:ital,wght=0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght=400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;605;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     
+    <!-- CSS / Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -74,10 +76,57 @@
   <body class="bg-neutral-50 text-neutral-800 font-sans antialiased selection:bg-red-600 selection:text-white">
     <div id="root"></div>
 
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Real-time Error Diagnosis Overlay for iframe and sandboxed environments -->
+    <script>
+      (function() {
+        var errorCount = 0;
+        window.addEventListener('error', function(e) {
+          errorCount++;
+          var root = document.getElementById('root');
+          if (root && errorCount <= 5) {
+            var errContainer = document.getElementById('jafi-err-diagnostic');
+            if (!errContainer) {
+              errContainer = document.createElement('div');
+              errContainer.id = 'jafi-err-diagnostic';
+              errContainer.className = 'm-6 p-5 bg-red-50 border border-red-200 text-red-800 rounded-2xl shadow-lg max-w-4xl mx-auto text-left font-mono text-xs';
+              errContainer.innerHTML = '<h3 class="text-base font-bold text-red-900 mb-2 font-sans">Sovereign Portal: Client-Side Telemetry Intercept</h3>' +
+                '<p class="mb-3 font-sans text-neutral-600">A security block or runtime reference interrupt occurred in the browser pipeline. Please double check CDN state or script definitions below:</p>';
+              root.insertBefore(errContainer, root.firstChild);
+            }
+            var errLine = document.createElement('div');
+            errLine.className = 'p-3 bg-white border border-red-100 rounded-xl mb-2 leading-relaxed';
+            errLine.innerHTML = '<strong>Error:</strong> ' + (e.message || 'Unknown compilation or execution error') +
+              '<br/><span class="text-[10px] text-neutral-400">Location: ' + (e.filename || 'Babel standalone script block') + ' : Line ' + (e.lineno || 'N/A') + ':' + (e.colno || 'N/A') + '</span>';
+            errContainer.appendChild(errLine);
+          }
+        });
+        window.addEventListener('unhandledrejection', function(e) {
+          var root = document.getElementById('root');
+          if (root) {
+            var errContainer = document.getElementById('jafi-err-diagnostic');
+            if (!errContainer) {
+              errContainer = document.createElement('div');
+              errContainer.id = 'jafi-err-diagnostic';
+              errContainer.className = 'm-6 p-5 bg-red-50 border border-red-200 text-red-800 rounded-2xl shadow-lg max-w-4xl mx-auto text-left font-mono text-xs';
+              errContainer.innerHTML = '<h3 class="text-base font-bold text-red-900 mb-2 font-sans">Sovereign Portal: Client-Side Telemetry Intercept</h3>' +
+                '<p class="mb-3 font-sans text-neutral-600">An unhandled promise rejection occurred in the background thread:</p>';
+              root.insertBefore(errContainer, root.firstChild);
+            }
+            var errLine = document.createElement('div');
+            errLine.className = 'p-3 bg-white border border-red-100 rounded-xl mb-2 leading-relaxed';
+            errLine.innerHTML = '<strong>Rejection:</strong> ' + (e.reason || 'Unknown Rejection');
+            errContainer.appendChild(errLine);
+          }
+        });
+      })();
+    </script>
 
+    <!-- React 18 & Babel via CDN (Ensures no import statement or export token errors in the browser) -->
+    <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone@7.24.2/babel.min.js" crossorigin></script>
+
+    <!-- Unified Single-File Frontend Applet Script -->
     <script type="text/babel">
       // 1. EXTRACT BROWSER GLOBALS FOR CLEAN, MODULAR HOOKS
       const { useState, useEffect, useMemo, useRef } = React;
@@ -138,7 +187,7 @@
           desc: "Biometric systems installation, biodata registration analysis, and high-frequency gate control validation systems implementation.",
           category: "Surveillance",
           badge: "Biodata Control",
-          priceEstimator: 750050
+          priceEstimator: 750000
         },
         {
           id: "events",
@@ -592,11 +641,11 @@
               {isLoading ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   {[1, 2, 3, 4].map((i) => (
-                     <div key={i} className="bg-white border border-neutral-200 p-5 rounded-2xl space-y-4 shadow-sm animate-pulse">
-                       <div className="h-3 w-24 bg-neutral-200 rounded animate-pulse"></div>
-                       <div className="h-4 bg-neutral-200 rounded animate-pulse"></div>
-                       <div className="h-12 bg-neutral-100 rounded animate-pulse"></div>
-                     </div>
+                    <div key={i} className="bg-white border border-neutral-200 p-5 rounded-2xl space-y-4 shadow-sm animate-pulse">
+                      <div className="h-3 w-24 bg-neutral-200 rounded"></div>
+                      <div className="h-4 bg-neutral-200 rounded"></div>
+                      <div className="h-12 bg-neutral-105 bg-neutral-100 rounded"></div>
+                    </div>
                   ))}
                 </div>
               ) : (
@@ -841,14 +890,14 @@
           <div className="flex flex-col min-h-screen bg-neutral-50 text-neutral-900 font-sans antialiased selection:bg-red-600 selection:text-white">
             
             {/* 1. STATE ANNOUNCEMENT BAR */}
-            <div className="bg-neutral-950 text-white text-[11px] py-2.5 px-4 sm:px-6 border-b border-neutral-800 tracking-wide font-medium">
+            <div className="bg-neutral-950 text-white text-[11px] py-1.5 px-4 sm:px-6 border-b border-neutral-800 tracking-wide font-medium">
               <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-3">
                 <div className="flex items-center space-x-3 text-left">
                   <span className="inline-flex items-center font-bold tracking-wider text-red-500 uppercase text-[10px]">
                     <span className="h-2 w-2 rounded-full bg-red-600 mr-2 animate-ping shrink-0" />
                     NSCDC Licensed Category-A Private Guard Specialist
                   </span>
-                  <span className="hidden md:inline text-neutral-850">|</span>
+                  <span className="hidden md:inline text-neutral-800">|</span>
                   <span className="hidden md:inline text-neutral-400">RC no. 685321 (Nigeria)</span>
                 </div>
                 <div className="flex items-center space-x-4">
@@ -993,7 +1042,7 @@
                             Advanced Tactical <br />
                             <span className="text-red-600 font-sans font-black tracking-tighter">Defense Ecosystem</span>
                           </h1>
-                          <p className="text-neutral-500 text-sm sm:text-base leading-relaxed">
+                          <p className="text-neutral-505 text-neutral-500 text-sm sm:text-base leading-relaxed">
                             JAFI Security Limited is not just another guarding operation; it is a <strong>Tier-1, Category-A defense ecosystem</strong>. Established in March 2007, JAFI secures critical pipelines, coastal ports, maritime jetties, open campus universities, and heavy industrial yards with absolute compliance.
                           </p>
                           <div className="grid grid-cols-3 gap-4 py-4 border-t border-b border-neutral-200 font-mono">
@@ -1058,7 +1107,7 @@
                     <div className="absolute inset-0 bg-[radial-gradient(#262626_1px,transparent_1px)] [background-size:20px_20px] opacity-35" />
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                       <div className="space-y-2">
-                        <span className="text-red-500 text-[10px] font-mono font-bold uppercase tracking-widest block">
+                        <span className="text-red-500 text-[10px] font-mono font-bold uppercase tracking-widest block font-bold text-red-550">
                           PROPRIETARY INTEL REGISTRY
                         </span>
                         <h2 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight">
@@ -1082,7 +1131,7 @@
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
                       <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-4 pb-6 border-b border-neutral-100">
                         <div className="space-y-1">
-                          <span className="text-red-500 font-mono text-xs font-bold uppercase tracking-widest block">Core Divisions Spotlight</span>
+                          <span className="text-red-505 text-red-650 font-mono text-xs font-bold uppercase tracking-widest block">Core Divisions Spotlight</span>
                           <h2 className="text-2xl sm:text-3xl font-serif font-black tracking-tight text-neutral-950">Explore Certified Divisions</h2>
                         </div>
                         <div className="flex flex-wrap gap-1">
@@ -1133,7 +1182,7 @@
                         </div>
 
                         <div className="lg:col-span-5 bg-white border border-neutral-200/80 p-5 rounded-2xl text-xs space-y-4">
-                          <span className="font-mono text-neutral-450 uppercase tracking-wider text-[9px] font-black block">Operational Vetting</span>
+                          <span className="font-mono text-neutral-500 uppercase tracking-wider text-[9px] font-black block">Operational Vetting</span>
                           <ul className="space-y-3">
                             <li className="flex items-start gap-2.5 text-neutral-600 leading-snug">
                               <Icon name="check" className="h-4.5 w-4.5 text-red-600 shrink-0 mt-0.5" />
@@ -1184,7 +1233,7 @@
                           A fully certified manned guard service authorized directly by the Nigeria Security and Civil Defence Corps (NSCDC) to deploy and operate security commands for high-value national assets.
                         </p>
                       </div>
-                      <span className="text-[10px] font-mono text-red-500 pt-4 block uppercase font-bold">NSCDC APPROVED STANDARDIZER</span>
+                      <span className="text-[10px] font-mono text-neutral-550 pt-4 block uppercase font-bold text-red-500">NSCDC APPROVED STANDARDIZER</span>
                     </div>
                   </div>
 
@@ -1234,7 +1283,7 @@
                           <p className="text-neutral-500 leading-normal text-xs">{s.desc}</p>
                         </div>
                         <div className="pt-4 border-t border-neutral-100 mt-6 flex justify-between items-center text-[10px] font-mono">
-                          <button onClick={() => selectServiceAndCalculate(s.id)} className="text-red-600 hover:text-black font-extrabold uppercase">
+                          <button onClick={() => selectServiceAndCalculate(s.id)} className="text-red-650 text-red-605 text-red-600 hover:text-black font-extrabold uppercase">
                             Configure EOI
                           </button>
                         </div>
@@ -1248,7 +1297,7 @@
               {activeTab === "safety-desk" && (
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 space-y-10 animate-fade-in text-left">
                   <div className="space-y-2 pb-4 border-b border-neutral-200">
-                    <span className="text-red-500 font-mono text-xs font-bold uppercase tracking-widest block">Command Workstation</span>
+                    <span className="text-red-500 font-mono text-xs font-bold uppercase tracking-widest block font-bold text-red-550">Command Workstation</span>
                     <h1 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-neutral-950 flex items-center gap-2">
                       <Icon name="shield" className="h-7 w-7 text-red-600" />
                       JAFI Safety Desk Workstation
@@ -1262,7 +1311,7 @@
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-neutral-200 pb-5">
                       <div>
                         <h3 className="text-sm sm:text-base font-bold text-neutral-900 font-serif">Real-Time Security Advisories</h3>
-                        <p className="text-[9px] text-neutral-400 uppercase font-mono mt-0.5 tracking-wider">COMMAND BASE MATRIX ACTIVE</p>
+                        <p className="text-[9px] text-neutral-500 uppercase font-mono mt-0.5 tracking-wider font-extrabold">COMMAND BASE MATRIX ACTIVE</p>
                       </div>
                       <button
                         onClick={async () => {
@@ -1301,7 +1350,7 @@
                           }
                         }}
                         disabled={briefingLoading}
-                        className="bg-red-600 hover:bg-neutral-950 text-white font-mono text-[10px] font-black uppercase py-3.5 px-6 rounded-xl transition duration-150 disabled:bg-neutral-300 pointer-events-auto"
+                        className="bg-red-600 hover:bg-neutral-950 text-white font-mono text-[10px] font-black uppercase py-3.5 px-6 rounded-xl transition duration-150 disabled:bg-neutral-300"
                       >
                         {briefingLoading ? "Transmitting Signal..." : "Generate Security Briefing"}
                       </button>
@@ -1329,7 +1378,7 @@
                           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             {safetyBriefing.recommendations.map((rec, id) => (
                               <li key={id} className="bg-emerald-50/40 border border-emerald-100 p-3.5 text-xs text-neutral-700 rounded-xl flex items-start gap-2.5">
-                                <Icon name="check" className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                                <Icon name="check" className="h-4.5 w-4.5 text-emerald-500 shrink-0 mt-0.5" />
                                 <span className="leading-snug">{rec}</span>
                               </li>
                             ))}
@@ -1349,7 +1398,7 @@
                     <h2 className="text-2xl sm:text-4xl font-serif font-black tracking-tight text-neutral-950">Active Vetted Client Logs</h2>
                   </div>
 
-                  <div className="bg-white border border-neutral-200 p-5 rounded-3xl shadow-sm max-w-2xl mx-auto space-y-4">
+                  <div className="bg-white border border-neutral-200 p-5 rounded-3xl shadow-xs max-w-2xl mx-auto space-y-4">
                     <input
                       type="text"
                       className="w-full bg-neutral-50 border border-neutral-200 rounded-xl p-3 text-xs focus:outline-none focus:bg-white"
@@ -1376,7 +1425,7 @@
 
                   <div className="space-y-4">
                     {filteredPortfolios.map((p, id) => (
-                      <div key={id} className="bg-white border border-neutral-200 rounded-2xl p-5 hover:border-red-600 transition flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+                      <div key={id} className="bg-white border border-neutral-200 rounded-2xl p-5 hover:border-red-650 transition flex flex-col md:flex-row md:justify-between md:items-start gap-4">
                         <div className="space-y-2 max-w-lg font-sans">
                           <span className="text-[9px] font-mono font-bold text-red-600 uppercase">PRESTIGIOUS LOG</span>
                           <h3 className="text-base font-bold text-neutral-950 font-serif leading-none">{p.client}</h3>
@@ -1404,14 +1453,14 @@
               {activeTab === "board" && (
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 space-y-12 animate-fade-in text-left">
                   <div className="text-center space-y-2">
-                    <span className="text-red-500 font-mono text-xs font-bold uppercase tracking-widest">Administrative Watch</span>
+                    <span className="text-red-505 text-red-650 font-mono text-xs font-bold uppercase tracking-widest">Administrative Watch</span>
                     <h2 className="text-2xl sm:text-4xl font-serif font-black tracking-tight text-neutral-950">Executive Leadership Board</h2>
                   </div>
 
                   {/* Operational commander spotlight */}
                   <div className="bg-neutral-950 text-white rounded-3xl p-6 md:p-8 flex flex-col md:flex-row gap-6 relative overflow-hidden group border border-neutral-800">
                     <div className="absolute top-0 right-0 h-40 w-40 bg-red-600/5 rounded-full blur-2xl pointer-events-none" />
-                    <div className="h-20 w-20 bg-neutral-900 border border-neutral-850 rounded-xl flex items-center justify-center p-2.5 shrink-0 select-none">
+                    <div className="h-20 w-20 bg-neutral-900 border border-neutral-800 rounded-xl flex items-center justify-center p-2.5 shrink-0 select-none">
                       <Icon name="user-check" className="h-8 w-8 text-red-600" />
                     </div>
                     <div className="space-y-4">
@@ -1438,7 +1487,7 @@
                       {LEADERSHIP.map((leader, index) => (
                         <div key={index} className="bg-white border border-neutral-200 rounded-2xl p-5 hover:border-red-600 transition flex flex-col justify-between">
                           <div>
-                            <span className="text-[9px] font-mono text-red-600 font-bold block">{leader.role}</span>
+                            <span className="text-[9px] font-mono text-red-605 text-red-600 font-bold block">{leader.role}</span>
                             <h4 className="font-serif font-bold text-base text-neutral-950 pt-1">{leader.name}</h4>
                             <p className="text-[11px] text-neutral-500 font-sans mt-1">{leader.credentials}</p>
                           </div>
@@ -1453,14 +1502,14 @@
               {activeTab === "quote" && (
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 animate-fade-in text-left">
                   <div className="text-center space-y-2 mb-10">
-                    <span className="text-red-500 font-mono text-xs font-bold uppercase tracking-widest block">Sovereign Dispatch Portal</span>
+                    <span className="text-red-500 font-mono text-xs font-bold uppercase tracking-widest block font-bold text-red-550">Sovereign Dispatch Portal</span>
                     <h2 className="text-2xl sm:text-4xl font-serif font-black tracking-tight text-neutral-950">Interactive EOI Configurator</h2>
                     <p className="text-xs sm:text-sm text-neutral-500 max-w-lg mx-auto leading-relaxed">
                       Configure your local guards force requirements below to dynamically draft and submit a non-binding official Expression of Interest directly via email.
                     </p>
                   </div>
 
-                  <div className="bg-white border border-neutral-200 rounded-3xl p-6 sm:p-8 shadow-sm max-w-3xl mx-auto">
+                  <div className="bg-white border border-neutral-200 rounded-3xl p-6 sm:p-8 shadow-xs max-w-3xl mx-auto">
                     <span className="block font-mono text-neutral-400 text-[9px] font-black uppercase tracking-wider mb-6">DEPLOYMENT SPEC PARAMETERS</span>
                     
                     <form onSubmit={handleGenerateQuote} className="space-y-6 font-sans">
@@ -1536,10 +1585,10 @@
                                 }`}
                               >
                                 <div className="flex h-5 items-center mr-3 mt-0.5">
-                                  <div className={`h-4 w-4 rounded flex items-center justify-center border ${
-                                    isChecked ? "bg-red-650 border-red-650 text-white" : "bg-white border-neutral-300"
+                                  <div className={`h-4.5 w-4.5 rounded flex items-center justify-center border ${
+                                    isChecked ? "bg-red-600 border-red-650 text-white" : "bg-white border-neutral-300"
                                   }`}>
-                                    {isChecked && <Icon name="check" className="h-3 w-3 text-white" />}
+                                    {isChecked && <Icon name="check" className="h-3.5 w-3.5 text-white" />}
                                   </div>
                                 </div>
                                 <div className="text-left leading-tight">
@@ -1572,7 +1621,7 @@
                           type="submit"
                           className="w-full bg-neutral-950 hover:bg-red-600 text-white uppercase text-xs font-black py-4 rounded-xl tracking-widest text-center flex items-center justify-center gap-2 transition cursor-pointer"
                         >
-                          <Icon name="activity" className="h-4 w-4" />
+                          <Icon name="activity" className="h-4.5 w-4.5" />
                           Compile & Submit EOI Proposal (Email Clients)
                         </button>
                       </div>
@@ -1585,289 +1634,198 @@
               {activeTab === "contact" && (
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 animate-fade-in text-left">
                   <div className="text-center space-y-2 mb-10">
-                    <span className="text-red-500 font-mono font-bold text-xs uppercase tracking-widest block">Command Terminal</span>
-                    <h2 className="text-2xl sm:text-4xl font-serif font-black tracking-tight text-neutral-950 text-center leading-none">Command Communications Hub</h2>
+                    <span className="text-red-500 font-mono text-xs font-bold uppercase tracking-widest block font-bold text-red-550">Logistics Communications</span>
+                    <h2 className="text-2xl sm:text-4xl font-serif font-black tracking-tight text-neutral-950">Dispatch Command Hub</h2>
+                    <p className="text-xs sm:text-sm text-neutral-500 max-w-lg mx-auto leading-relaxed">
+                      Reach our primary operational dispatch and procurement board directly in Abuja. Security signals are monitored 24/7.
+                    </p>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
-                    <div className="bg-white border border-neutral-200 p-6 rounded-3xl flex flex-col justify-between shadow-xs text-xs font-sans">
-                      <div className="space-y-4 text-left">
-                        <span className="font-mono text-neutral-400 text-[9px] block">SECURITY BASE CODES</span>
-                        <h3 className="text-sm font-black text-neutral-950 uppercase border-b border-neutral-100 pb-2 flex items-center gap-2">
-                          <Icon name="shield" className="h-5 w-5 text-red-600" />
-                          Headquarters Address
-                        </h3>
-                        <div className="space-y-2 font-semibold">
-                          <p className="text-neutral-900 font-bold font-serif">JAFI Security Limited, FCT HQ</p>
-                          <p className="text-neutral-500 leading-relaxed font-sans mt-1">
-                            Castle Rock Apartments (Building CRO2),<br />
-                            P.O.W. Mafemi Crescent, Behind Chida Hotel,<br />
-                            Utako, Abuja, Federal Capital Territory, Nigeria.
-                          </p>
-                        </div>
-                        <div className="pt-2 border-t border-dashed border-neutral-200 leading-snug font-sans">
-                          <p><strong>Hours Node:</strong> Monday – Friday | Typically 9 AM – 5 PM</p>
-                          <p className="text-[10px] text-zinc-400 mt-1 font-mono">RC 685321 (West Africa)</p>
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    
+                    <div className="lg:col-span-4 space-y-6">
+                      <div className="bg-white border border-neutral-200 rounded-2xl p-5 space-y-4">
+                        <span className="block text-[8px] font-mono font-bold text-red-600 uppercase tracking-widest">COMMAND HQ</span>
+                        <div className="space-y-3 text-xs">
+                          <div className="flex items-start gap-3">
+                            <Icon name="map-pin" className="h-5 w-5 text-neutral-400 shrink-0 mt-0.5" />
+                            <div>
+                              <p className="font-bold text-neutral-900 leading-none mb-1">Physical Base</p>
+                              <p className="text-neutral-500 leading-normal">
+                                No. 12 Damaturu Crescent, <br />
+                                Off Gana Street, Maitama, <br />
+                                Abuja - Federal Capital Territory, Nigeria.
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-3 pt-2">
+                            <Icon name="phone" className="h-5 w-5 text-neutral-400 shrink-0 mt-0.5" />
+                            <div>
+                              <p className="font-bold text-neutral-900 leading-none mb-1">Helpline</p>
+                              <p className="font-mono text-neutral-500">+234 (0) 803 331 5202</p>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-3 pt-2">
+                            <Icon name="mail" className="h-5 w-5 text-neutral-400 shrink-0 mt-0.5" />
+                            <div>
+                              <p className="font-bold text-neutral-900 leading-none mb-1">Encrypted Mail</p>
+                              <p className="font-mono text-neutral-500">contact_us@jafisecurity.com</p>
+                            </div>
+                          </div>
                         </div>
                       </div>
 
-                      <div className="pt-4 mt-6 border-t border-neutral-200 font-mono space-y-1.5 block">
-                        <p className="font-bold text-red-650 text-red-600">Disp Hotline: +234-8033058864</p>
-                        <p className="font-bold text-red-650 text-red-600">Disp Hotline 2: +234-8142626908</p>
-                        <p className="text-neutral-500">Dispatch: contact_us@jafisecurity.com</p>
+                      <div className="bg-neutral-950 text-white rounded-2xl p-5 border border-neutral-850 font-mono text-[10px] space-y-3">
+                        <span className="text-red-500 font-bold uppercase tracking-wider block">TRANSMISSION FREQUENCY</span>
+                        <p className="text-neutral-300">Channels monitored continuously. Response intervals for priority civilian escalations average &lt; 15 minutes.</p>
                       </div>
                     </div>
 
-                    <div className="bg-white border border-neutral-200 p-6 rounded-3xl shadow-sm">
-                      <span className="font-mono text-neutral-400 text-[9px] block mb-4">DIRECT MESSAGE DISPATCH</span>
-                      
+                    <div className="lg:col-span-8 bg-white border border-neutral-200 rounded-3xl p-6 sm:p-8">
+                      <h3 className="text-sm uppercase font-mono font-black text-neutral-450 tracking-wider mb-6">TRANSMIT DIRECT INQUIRY</h3>
+
                       <form onSubmit={handleContactSubmit} className="space-y-4 font-sans text-xs">
-                        <div>
-                          <label className="block font-bold text-neutral-700 uppercase mb-1">Your Name *</label>
-                          <input
-                            type="text"
-                            required
-                            className="w-full bg-neutral-50 border border-neutral-200 rounded-lg p-2.5 text-xs font-medium focus:bg-white focus:outline-none"
-                            placeholder="Officer name"
-                            value={contactForm.name}
-                            onChange={(e) => setContactForm(prev => ({ ...prev, name: e.target.value }))}
-                          />
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div>
-                            <label className="block font-bold text-neutral-700 uppercase mb-1">Your Email *</label>
+                            <label className="block text-[10px] font-black uppercase text-neutral-700 tracking-wider mb-1.5">Your Name *</label>
+                            <input
+                              type="text"
+                              required
+                              className="w-full bg-neutral-50 border border-neutral-200 rounded-xl p-3 text-xs focus:outline-none focus:bg-white"
+                              value={contactForm.name}
+                              onChange={(e) => setContactForm(prev => ({ ...prev, name: e.target.value }))}
+                              placeholder="e.g., General Officer"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[10px] font-black uppercase text-neutral-700 tracking-wider mb-1.5">Company / Agency Name</label>
+                            <input
+                              type="text"
+                              className="w-full bg-neutral-50 border border-neutral-200 rounded-xl p-3 text-xs focus:outline-none focus:bg-white"
+                              value={contactForm.organization}
+                              onChange={(e) => setContactForm(prev => ({ ...prev, organization: e.target.value }))}
+                              placeholder="e.g., Federal Commission"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-[10px] font-black uppercase text-neutral-700 tracking-wider mb-1.5">Direct Email *</label>
                             <input
                               type="email"
                               required
-                              className="w-full bg-neutral-50 border border-neutral-200 rounded-lg p-2.5 text-xs font-medium focus:bg-white focus:outline-none"
-                              placeholder="agency@domain.gov.ng"
+                              className="w-full bg-neutral-50 border border-neutral-200 rounded-xl p-3 text-xs focus:outline-none focus:bg-white"
                               value={contactForm.email}
                               onChange={(e) => setContactForm(prev => ({ ...prev, email: e.target.value }))}
+                              placeholder="officer@agency.gov.ng"
                             />
                           </div>
                           <div>
-                            <label className="block font-bold text-neutral-700 uppercase mb-1">Call PIN</label>
-                            <input
-                              type="text"
-                              className="w-full bg-neutral-50 border border-neutral-200 rounded-lg p-2.5 text-xs focus:bg-white focus:outline-none"
-                              placeholder="+234..."
-                              value={contactForm.phone}
-                              onChange={(e) => setContactForm(prev => ({ ...prev, phone: e.target.value }))}
-                            />
+                            <label className="block text-[10px] font-black uppercase text-neutral-700 tracking-wider mb-1.5">Primary Subject Category</label>
+                            <select
+                              className="w-full bg-neutral-50 border border-neutral-200 rounded-xl p-3 text-xs focus:outline-none focus:bg-white cursor-pointer"
+                              value={contactForm.subject}
+                              onChange={(e) => setContactForm(prev => ({ ...prev, subject: e.target.value }))}
+                            >
+                              <option>Command Operations Inquiry</option>
+                              <option>CBRNE Trace Diagnostics Supply</option>
+                              <option>EOD Certified Syllabus Retraining</option>
+                              <option>SCCO Guard Forces Deployment</option>
+                              <option>Administrative/Licensing Regulatory</option>
+                            </select>
                           </div>
                         </div>
+
                         <div>
-                          <label className="block font-bold text-neutral-700 uppercase mb-1">Inquiry Subject</label>
-                          <select
-                            className="w-full bg-neutral-50 border border-neutral-200 rounded-lg p-2.5 text-xs font-medium focus:outline-none"
-                            value={contactForm.subject}
-                            onChange={(e) => setContactForm(prev => ({ ...prev, subject: e.target.value }))}
-                          >
-                            <option value="Command Operations Inquiry">Guard Force Dispatch & Patrols</option>
-                            <option value="CBRNE Detection Procurement">CBRNE Equipment Procurement</option>
-                            <option value="EOD Certification Training">EOD Training Partnerships</option>
-                            <option value="VIP Escort Protocols">VIP Executive Escort</option>
-                            <option value="General Agency Support">General Commercial Support</option>
-                          </select>
-                        </div>
-                        <div>
-                          <label className="block font-bold text-neutral-700 uppercase mb-1">Message Detail *</label>
+                          <label className="block text-[10px] font-black uppercase text-neutral-700 tracking-wider mb-1.5">Dispatch Message Requirements *</label>
                           <textarea
                             required
-                            rows={4}
-                            className="w-full bg-neutral-50 border border-neutral-200 rounded-lg p-2.5 text-xs focus:bg-white focus:outline-none text-neutral-800"
-                            placeholder="State layout details, timeline limits, or security specs..."
+                            rows="4"
+                            className="w-full bg-neutral-50 border border-neutral-200 rounded-xl p-3 text-xs focus:outline-none focus:bg-white"
                             value={contactForm.message}
                             onChange={(e) => setContactForm(prev => ({ ...prev, message: e.target.value }))}
+                            placeholder="Detail your regional defensive guarding requirements, physical checkpoints or equipment schedules..."
                           />
                         </div>
-                        <button type="submit" className="w-full bg-red-600 hover:bg-neutral-950 text-white font-extrabold uppercase py-3 rounded-lg transition hover:bg-neutral-900">
-                          Transmit Inquiry
+
+                        {isContactSubmitted && (
+                          <div className="p-3 bg-red-50 text-red-600 rounded-xl text-center font-bold font-sans">
+                            Opening default email client... Transmitting dispatch coordinates...
+                          </div>
+                        )}
+
+                        <button
+                          type="submit"
+                          className="w-full bg-neutral-950 hover:bg-neutral-900 text-white text-[10px] font-black tracking-widest uppercase py-3.5 rounded-xl transition cursor-pointer"
+                        >
+                          Transmit Dispatch Request
                         </button>
                       </form>
                     </div>
+
                   </div>
                 </div>
               )}
 
             </main>
 
-            {/* AUTOMATED SECURITY ASSESSMENT - HOMEPAGE WIDGET */}
-            {activeTab === "home" && (
-              <section className="bg-neutral-100 py-16 border-t border-b border-neutral-200 text-left">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-8 animate-fade-in">
-                  <div className="text-center space-y-1.5">
-                    <span className="text-red-500 font-mono font-bold text-xs uppercase tracking-widest block">Automated Diagnostic</span>
-                    <h2 className="text-2xl sm:text-3xl font-serif font-semibold text-neutral-950 tracking-tight">Enterprise Security Diagnostics</h2>
-                    <p className="text-xs sm:text-sm text-neutral-500 max-w-xl mx-auto text-center leading-normal">
-                      Input your upcoming event parameters, pipeline depots, or layout dimensions below to securely analyze potential threats and match appropriate services.
-                    </p>
-                  </div>
-
-                  <div className="bg-white border border-neutral-200 p-6 sm:p-8 rounded-3xl space-y-6 shadow-sm">
-                    <div className="space-y-2">
-                      <label className="block text-[10px] font-black uppercase text-neutral-800 tracking-wider">Describe Venture, Locations, or Operations</label>
-                      <textarea
-                        rows={4}
-                        className="w-full bg-neutral-50 border border-neutral-200 rounded-2xl p-4 text-xs font-medium focus:bg-white focus:outline-none leading-relaxed text-neutral-800"
-                        placeholder="Describe your upcoming event (e.g. 'We are hosting a public meeting with 200 attendees in Abuja') or facilities (e.g. 'Opening a depot with loading docks in Gombe')"
-                        value={assessmentDescription}
-                        onChange={(e) => setAssessmentDescription(e.target.value)}
-                      />
-                    </div>
-
-                    {assessmentError && (
-                      <div className="bg-red-50 border border-red-200 text-red-800 text-xs p-3 rounded-xl flex items-center gap-2">
-                        <Icon name="shield-alert" className="h-4 w-4 text-red-600 shrink-0" />
-                        <span className="font-bold text-red-700">{assessmentError}</span>
-                      </div>
-                    )}
-
-                    <button
-                      onClick={handleAnalyzeSecurityRequirements}
-                      disabled={assessmentLoading}
-                      className="bg-neutral-950 hover:bg-neutral-850 text-white uppercase text-xs font-black py-3.5 px-6 rounded-xl transition cursor-pointer flex items-center gap-2"
-                    >
-                      {assessmentLoading ? "Evaluating Specifications..." : "Analyze Threat Vectors"}
-                    </button>
-
-                    {assessmentResult && (
-                      <div className="border-t border-neutral-100 pt-6 space-y-6 animate-fade-in font-sans text-xs">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div className="bg-neutral-50/50 border border-neutral-200 p-4 rounded-xl space-y-3">
-                            <h4 className="font-mono text-neutral-900 font-bold uppercase tracking-wider flex items-center gap-1.5">
-                              <Icon name="shield-alert" className="h-4 w-4 text-red-600" />
-                              Identified Danger Vectors
-                            </h4>
-                            <ul className="space-y-2">
-                              {assessmentResult.vulnerabilities.map((v, idx) => (
-                                <li key={idx} className="bg-white border border-neutral-200/50 p-2.5 rounded-lg text-neutral-700 leading-relaxed font-sans">
-                                  <strong>0{idx+1}:</strong> {v}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-
-                          <div className="bg-neutral-50/50 border border-neutral-200 p-4 rounded-xl space-y-3">
-                            <h4 className="font-mono text-neutral-900 font-bold uppercase tracking-wider flex items-center gap-1.5">
-                              <Icon name="check" className="h-4 w-4 text-emerald-600" />
-                              Recommended Divisions
-                            </h4>
-                            <div className="space-y-2">
-                              {SERVICES.filter(srv => assessmentResult.recommendedServiceIds.includes(srv.id)).map(srv => (
-                                <div key={srv.id} className="bg-white border border-neutral-200/50 p-2.5 rounded-lg">
-                                  <span className="bg-red-50 text-red-600 text-[8px] font-mono px-1.5 py-0.5 rounded font-bold uppercase">{srv.badge}</span>
-                                  <p className="font-serif font-bold text-neutral-900 pt-1 leading-snug">{srv.title}</p>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="bg-neutral-950 text-white rounded-xl p-5 border border-neutral-850 flex flex-col sm:flex-row items-center justify-between gap-4">
-                          <div className="text-center sm:text-left space-y-1">
-                            <span className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[8px] font-mono font-bold px-1.5 py-0.5 rounded">CONNECTIVITY PIPELINE READY</span>
-                            <h4 className="text-sm font-serif font-bold text-[#fafafa] pt-1">Accelerate Official EOI Draft Configuration</h4>
-                            <p className="text-[10.5px] text-zinc-400 font-sans leading-normal">Transfer these pre-calculated parameters and threat assessment directly into our interactive estimator checklist.</p>
-                          </div>
-                          <button
-                            onClick={() => {
-                              setQuoteForm(prev => ({
-                                ...prev,
-                                selectedServices: assessmentResult.recommendedServiceIds,
-                                details: assessmentDescription
-                              }));
-                              setActiveTab("quote");
-                            }}
-                            className="bg-red-600 text-white text-[11px] font-bold py-2.5 px-4 rounded-lg uppercase shrink-0 transition hover:bg-white hover:text-neutral-900 shadow shadow-red-600/15 cursor-pointer"
-                          >
-                            Get Quotation
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </section>
-            )}
-
-            {/* LIVE EXECUTIONS CORRIDOR RSS BULLETIN LOG ticker marquee */}
+            {/* 5. NATIONAL SAFETY BULLETIN FOOTER INJECT */}
             <NationalSecurityUpdates />
 
-            {/* TRUSTED REGISTER LOGO MARQUEE TICKER */}
-            <section className="bg-neutral-50 border-t border-neutral-100 py-10 overflow-hidden select-none">
-              <div className="max-w-7xl mx-auto px-4 text-center mb-6">
-                <span className="text-[10px] font-mono font-bold text-red-600 uppercase tracking-widest block mb-1">PARTNERSHIP CHANNELS</span>
-                <h3 className="text-[11px] font-mono tracking-widest uppercase font-black text-neutral-800">Sovereign & Corporate Alliances</h3>
-              </div>
-              <div className="relative w-full overflow-hidden flex items-center bg-white border-t border-b border-neutral-200/50 py-3">
-                <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-neutral-50 to-transparent z-10 pointer-events-none" />
-                <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-neutral-50 to-transparent z-10 pointer-events-none" />
-                <div className="flex animate-marquee shrink-0 items-center">
-                  {[
-                    "https://res.cloudinary.com/dehvk3bre/image/upload/v1781119465/Noun_logo_15188682875-650x657-1_p6bmbv.jpg",
-                    "https://res.cloudinary.com/dehvk3bre/image/upload/v1781119465/logo-dark_itspsn.png",
-                    "https://res.cloudinary.com/dehvk3bre/image/upload/v1781119466/images_5_rn5bbu.png",
-                    "https://res.cloudinary.com/dehvk3bre/image/upload/v1781119465/cropped-new-logo_j3rfy7.png",
-                    "https://res.cloudinary.com/dehvk3bre/image/upload/v1781119466/Nigerian_National_Petroleum_Company_logo.svg_bi98rf.png"
-                  ].map((logo, idx) => (
-                    <img key={`logo-primary-${idx}`} src={logo} alt="Client Logo" className="h-9 sm:h-11 w-auto mx-10 object-contain opacity-80" referrerPolicy="no-referrer" />
-                  ))}
-                  {[
-                    "https://res.cloudinary.com/dehvk3bre/image/upload/v1781119465/Noun_logo_15188682875-650x657-1_p6bmbv.jpg",
-                    "https://res.cloudinary.com/dehvk3bre/image/upload/v1781119465/logo-dark_itspsn.png",
-                    "https://res.cloudinary.com/dehvk3bre/image/upload/v1781119466/images_5_rn5bbu.png",
-                    "https://res.cloudinary.com/dehvk3bre/image/upload/v1781119465/cropped-new-logo_j3rfy7.png",
-                    "https://res.cloudinary.com/dehvk3bre/image/upload/v1781119466/Nigerian_National_Petroleum_Company_logo.svg_bi98rf.png"
-                  ].map((logo, idx) => (
-                    <img key={`logo-secondary-${idx}`} src={logo} alt="Client Logo Repeat" className="h-9 sm:h-11 w-auto mx-10 object-contain opacity-80" referrerPolicy="no-referrer" />
-                  ))}
+            {/* 6. CO-ORDINATING BASE BRAND PARTNERS */}
+            <section className="bg-white py-12 border-b border-neutral-200 font-sans">
+              <div className="max-w-7xl mx-auto px-4 text-center space-y-6">
+                <span className="block text-[9px] font-mono font-bold text-neutral-400 uppercase tracking-widest">
+                  Licensed Alliances & High-Grade Tech Partners
+                </span>
+                <div className="flex flex-wrap items-center justify-around gap-8 opacity-60 filter grayscale hover:grayscale-0 transition-all">
+                  <span className="font-serif font-bold text-neutral-950 text-sm tracking-wider">TELEDYNE FLIR</span>
+                  <span className="font-sans font-black text-neutral-950 text-xs tracking-tighter">NNPC ENSERV</span>
+                  <span className="font-sans font-extrabold text-neutral-950 text-sm tracking-tight">NPSC COALITION</span>
+                  <span className="font-serif italic text-neutral-950 text-sm">NOUN REGISTRY</span>
+                  <span className="font-mono font-bold text-neutral-950 text-xs text-red-650">NSCDC BOARD</span>
                 </div>
               </div>
             </section>
 
-            {/* 6. SUSTAINED FOOTER */}
-            <footer className="bg-neutral-950 text-neutral-400 border-t border-neutral-800 pt-12 pb-8 text-xs font-sans">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-neutral-900 text-left">
-                <div className="md:col-span-6 space-y-4">
-                  <div className="flex items-center gap-3">
-                    <img src="https://res.cloudinary.com/dehvk3bre/image/upload/v1781112383/20260610_182551_aqscap.png" alt="JAFI Logo" className="h-8 w-auto object-contain" referrerPolicy="no-referrer" />
-                    <span className="text-base font-black tracking-tight text-white uppercase">
-                      JAFI <span className="text-red-500 font-light">SECURITY</span>
-                    </span>
-                  </div>
-                  <p className="text-xs text-neutral-400 leading-relaxed max-w-sm">
-                    JAFI SECURITY LIMITED protects multi-billion Naira sovereign asset pipeline base installations, coastal jetties, public learning universities, and corporate perimeters nationwide.
+            {/* 7. SOVEREIGN REGULATORY COMPLIANCE FOOTER */}
+            <footer className="bg-neutral-950 text-zinc-400 text-xs py-14 border-t border-neutral-800 text-left font-sans">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-12 gap-10">
+                <div className="md:col-span-5 space-y-4">
+                  <JafiLogo className="invert brightness-0" />
+                  <p className="text-[11px] text-zinc-500 leading-normal max-w-sm">
+                    JAFI Security Limited RC 685321 is an authorized, licensed Category-A Private Guard Security provider regulated directly by the Ministry of Interior/NSCDC. Delivering sovereign protection across critical pipelines and national installations since March 2007.
                   </p>
-                  <p className="font-mono text-[9px] text-neutral-500">Corporate affairs: CAC RC-685321 (Incorporated March 15, 2007)</p>
                 </div>
 
-                <div className="md:col-span-3 space-y-4">
-                  <h4 className="text-[10px] font-mono uppercase font-bold text-white tracking-widest border-b border-neutral-800 pb-2">SERVICES</h4>
-                  <ul className="space-y-2 text-[11px] text-neutral-400 font-sans">
-                    {["Static Manned Patrols", "CBRNE Procurement", "EOD Training syllabus", "K9 Dog Patrols"].map((srv, idx) => (
-                      <li key={idx} className="flex items-center space-x-1.5">
-                        <span className="h-1.5 w-1.5 rounded-full bg-red-650" />
-                        <span>{srv}</span>
-                      </li>
-                    ))}
+                <div className="md:col-span-3 space-y-3">
+                  <span className="block text-[9px] font-semibold text-white tracking-widest uppercase">REGULATORY DEPARTMENTS</span>
+                  <ul className="space-y-1.5 text-[11px] text-zinc-500">
+                    <li className="hover:text-white cursor-pointer" onClick={() => setActiveTab("standing")}>Licensing Standing</li>
+                    <li className="hover:text-white cursor-pointer" onClick={() => setActiveTab("services")}>Specialist Divisions</li>
+                    <li className="hover:text-white cursor-pointer" onClick={() => setActiveTab("board")}>Executive Command Board</li>
+                    <li className="hover:text-white cursor-pointer" onClick={() => setActiveTab("experience")}>Prestige Portfolios</li>
                   </ul>
                 </div>
 
-                <div className="md:col-span-3 space-y-4 text-left font-sans text-[11px]">
-                  <h4 className="text-[10px] font-mono uppercase font-bold text-white tracking-widest border-b border-neutral-800 pb-2">HEAD OFFICE INFO</h4>
-                  <div className="space-y-2.5 text-neutral-400 leading-relaxed">
-                    <p>Building CRO2, Castle Rock Apartments, P.O.W. Mafemi Crescent, Behind Chida Hotel, Utako, Abuja, Federal Capital Territory, Nigeria.</p>
-                    <p className="font-mono text-neutral-300">Hotkey: +234-8033058864, +234-8142626908</p>
-                  </div>
+                <div className="md:col-span-4 space-y-3">
+                  <span className="block text-[9px] font-semibold text-white tracking-widest uppercase">DISPATCH TELEMETRY COORDS</span>
+                  <p className="text-[11px] text-zinc-500 leading-relaxed">
+                    Head Office: No. 12 Damaturu Crescent, Off Gana Street, Maitama, Abuja (FCT), Nigeria. <br />
+                    Helpline: <span className="font-mono text-zinc-350">+234 (0) 803 331 5202</span>
+                  </p>
+                  <p className="font-mono text-[9px] text-zinc-600">SYSTEM CODES: JS_CAT_A_DISPATCH // ONLINE</p>
                 </div>
               </div>
 
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] text-neutral-500 text-center md:text-left">
-                <p>© {new Date().getFullYear()} JAFI SECURITY LIMITED. Regulatory private guarding compliance complies fully with FGN sovereign standards.</p>
-                <span className="bg-neutral-900 border border-neutral-800 px-3 py-1 text-[9px] font-mono rounded font-black uppercase text-neutral-300 tracking-wider">
-                  Sovereign Category A Service Holder
-                </span>
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 mt-8 border-t border-neutral-850 flex flex-col sm:flex-row justify-between items-center gap-4 text-zinc-650 text-[10px]">
+                <p>&copy; {new Date().getFullYear()} JAFI Security Limited. All Sovereign Rights Reserved.</p>
+                <div className="flex space-x-4">
+                  <span>RC: 685321</span>
+                  <span>NSCDC CAT-A VETTED</span>
+                  <span>PORTAL STATUS: NOMINAL</span>
+                </div>
               </div>
             </footer>
 
@@ -1875,8 +1833,9 @@
         );
       }
 
-      // 6. INITIALIZE REACT 18 CORE APP INTO PORTAL ROOT DOM
-      const root = ReactDOM.createRoot(document.getElementById("root"));
+      // 8. COMPILE AND RENDER TO VIRTUAL DOM
+      const domContainer = document.querySelector('#root');
+      const root = ReactDOM.createRoot(domContainer);
       root.render(<App />);
     </script>
   </body>
