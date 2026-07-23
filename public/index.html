@@ -1033,20 +1033,6 @@ if (data.error) {
 }
 
 
-            const resData = await response.json();
-            if (resData.success && resData.data) {
-              setAssessmentResult(resData.data);
-            } else {
-              throw new Error("Failed to decode the response payload.");
-            }
-          } catch (err) {
-            console.error("Assessment analysis failed:", err);
-            setAssessmentError(err.message || "Failed to process security needs assessment. Please try again.");
-          } finally {
-            setAssessmentLoading(false);
-          }
-        };
-
         // EOI quote calculator form submittal
         const handleGenerateQuote = (e) => {
           e.preventDefault();
