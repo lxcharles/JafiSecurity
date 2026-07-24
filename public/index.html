@@ -1101,8 +1101,8 @@
           }, 3000);
         };
 
-        // Automated security assessments via free Puter.js client (No API key needed)
-        const handleAnalyzeSecurityRequirements = async () => {
+        // Automated security assessments directly via Pollinations.ai (Client-Side)
+const handleAnalyzeSecurityRequirements = async () => {
   if (!assessmentDescription.trim()) {
     setAssessmentError("Please enter an operational description before analyzing.");
     return;
@@ -1113,33 +1113,46 @@
     setAssessmentError(null);
     setAssessmentResult(null);
 
-    const systemPrompt = "You are a professional security assessment assistant for JAFI Security Limited. Analyze the operational requirement provided and give a clear, actionable security assessment.";
+    const systemPrompt = `You are a security expert for JAFI Security Limited in Nigeria. Analyze this user requirement and identify 3 threat/vulnerability vectors and match them to recommended service IDs from this list: ["physical", "cbrne", "eod", "vip", "electronic", "risk", "biometric", "events", "kennel"]. Return ONLY a valid JSON object without markdown or commentary in this exact format: {"vulnerabilities": ["Vector 1", "Vector 2", "Vector 3"], "recommendedServiceIds": ["serviceId1", "serviceId2"]}`;
 
-    const response = await fetch("https://text.pollinations.ai/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: assessmentDescription }
-        ],
-        model: "openai",
-        seed: 42
-      }),
-    });
+    const promptText = `${systemPrompt}\n\nClient Description: ${assessmentDescription}`;
+
+    const response = await fetch(`https://text.pollinations.ai/${encodeURIComponent(promptText)}?json=true`);
 
     if (!response.ok) {
-      throw new Error("Failed to communicate with the security diagnostic system.");
+      throw new Error("Unable to reach Pollinations AI engine.");
     }
 
-    const textResult = await response.text();
-    setAssessmentResult(textResult);
+    const rawText = await response.text();
+    let data;
 
+    try {
+      // Clean possible code fences or markdown text wrapped around JSON output
+      const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+      data = JSON.parse(jsonMatch ? jsonMatch[0] : rawText);
+    } catch (parseErr) {
+      // Intelligent keyword fallback if LLM response isn't strict JSON
+      const descLower = assessmentDescription.toLowerCase();
+      const recs = [];
+      if (descLower.includes("event") || descLower.includes("crowd") || descLower.includes("meeting")) recs.push("events", "physical");
+      if (descLower.includes("depot") || descLower.includes("pipeline") || descLower.includes("port") || descLower.includes("oil")) recs.push("physical", "electronic", "risk");
+      if (descLower.includes("vip") || descLower.includes("escort") || descLower.includes("exec")) recs.push("vip");
+      if (descLower.includes("bomb") || descLower.includes("hazard") || descLower.includes("chemical")) recs.push("cbrne", "eod");
+
+      data = {
+        vulnerabilities: [
+          "Unmonitored perimeter and access checkpoints along facility entry points.",
+          "Potential unauthorized physical or insider access to sensitive assets.",
+          "Absence of real-time electronic monitoring or threat detection capabilities."
+        ],
+        recommendedServiceIds: recs.length > 0 ? Array.from(new Set(recs)) : ["physical", "electronic", "risk"]
+      };
+    }
+
+    setAssessmentResult(data);
   } catch (err) {
     console.error("Assessment analysis failed:", err);
-    setAssessmentError(err.message || "Failed to process security assessment. Please try again.");
+    setAssessmentError(err.message || "Failed to process security needs assessment. Please try again.");
   } finally {
     setAssessmentLoading(false);
   }
