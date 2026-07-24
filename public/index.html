@@ -1064,28 +1064,46 @@
     return;
   }
 
-  // Check window.puter explicitly
-  const puter = window.puter;
-
-  if (!puter || !puter.ai) {
-    setAssessmentError("AI engine is still loading or blocked by network/ad-blocker. Please refresh and try again.");
-    return;
-  }
+  // Ensure Puter script is dynamically available if CDN was slow to load
+  const ensurePuterLoaded = () => {
+    return new Promise((resolve, reject) => {
+      if (window.puter && window.puter.ai) {
+        return resolve(window.puter);
+      }
+      
+      const existingScript = document.querySelector('script[src="https://js.puter.com/v2/"]');
+      if (!existingScript) {
+        const script = document.createElement("script");
+        script.src = "https://js.puter.com/v2/";
+        script.onload = () => resolve(window.puter);
+        script.onerror = () => reject(new Error("Network issue: Unable to reach Puter CDN script."));
+        document.head.appendChild(script);
+      } else {
+        existingScript.addEventListener("load", () => resolve(window.puter));
+        existingScript.addEventListener("error", () => reject(new Error("Network issue: Unable to reach Puter CDN script.")));
+      }
+    });
+  };
 
   try {
     setAssessmentLoading(true);
     setAssessmentError(null);
     setAssessmentResult(null);
 
-    // Call Puter AI directly
-    const response = await puter.ai.chat(assessmentDescription);
-    
-    // Set the returned response text
+    // Wait for Puter to be available
+    const puterInstance = await ensurePuterLoaded();
+
+    if (!puterInstance || !puterInstance.ai) {
+      throw new Error("Puter client loaded, but AI module is unavailable.");
+    }
+
+    // Call Puter AI
+    const response = await puterInstance.ai.chat(assessmentDescription);
     setAssessmentResult(response?.toString() || response);
 
   } catch (err) {
     console.error("Assessment analysis failed:", err);
-    setAssessmentError(err.message || "Failed to process security assessment.");
+    setAssessmentError(err.message || "Failed to process security assessment. Please check your internet connection.");
   } finally {
     setAssessmentLoading(false);
   }
