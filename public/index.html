@@ -1064,46 +1064,22 @@
     return;
   }
 
-  // Ensure Puter script is dynamically available if CDN was slow to load
-  const ensurePuterLoaded = () => {
-    return new Promise((resolve, reject) => {
-      if (window.puter && window.puter.ai) {
-        return resolve(window.puter);
-      }
-      
-      const existingScript = document.querySelector('script[src="https://js.puter.com/v2/"]');
-      if (!existingScript) {
-        const script = document.createElement("script");
-        script.src = "https://js.puter.com/v2/";
-        script.onload = () => resolve(window.puter);
-        script.onerror = () => reject(new Error("Network issue: Unable to reach Puter CDN script."));
-        document.head.appendChild(script);
-      } else {
-        existingScript.addEventListener("load", () => resolve(window.puter));
-        existingScript.addEventListener("error", () => reject(new Error("Network issue: Unable to reach Puter CDN script.")));
-      }
-    });
-  };
-
   try {
     setAssessmentLoading(true);
     setAssessmentError(null);
     setAssessmentResult(null);
 
-    // Wait for Puter to be available
-    const puterInstance = await ensurePuterLoaded();
+    // Call Puter AI with testMode enabled to skip the login/auth popup
+    const response = await window.puter.ai.chat(
+      assessmentDescription, 
+      true // Enables testMode / guest access to avoid redirecting users
+    );
 
-    if (!puterInstance || !puterInstance.ai) {
-      throw new Error("Puter client loaded, but AI module is unavailable.");
-    }
-
-    // Call Puter AI
-    const response = await puterInstance.ai.chat(assessmentDescription);
     setAssessmentResult(response?.toString() || response);
 
   } catch (err) {
     console.error("Assessment analysis failed:", err);
-    setAssessmentError(err.message || "Failed to process security assessment. Please check your internet connection.");
+    setAssessmentError(err.message || "Failed to process security assessment. Please try again.");
   } finally {
     setAssessmentLoading(false);
   }
