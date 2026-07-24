@@ -1059,21 +1059,30 @@
 
         // Automated security assessments via free Puter.js client (No API key needed)
         const handleAnalyzeSecurityRequirements = async () => {
-  // Ensure puter is loaded on the window object
-  const puterClient = window.puter;
+  if (!assessmentDescription.trim()) {
+    setAssessmentError("Please enter an operational description before analyzing.");
+    return;
+  }
 
-  if (!puterClient) {
-    setAssessmentError("AI engine is still loading. Please wait a moment and try again.");
+  // Check window.puter explicitly
+  const puter = window.puter;
+
+  if (!puter || !puter.ai) {
+    setAssessmentError("AI engine is still loading or blocked by network/ad-blocker. Please refresh and try again.");
     return;
   }
 
   try {
     setAssessmentLoading(true);
     setAssessmentError(null);
+    setAssessmentResult(null);
 
-    // Use the verified instance
-    const response = await puterClient.ai.chat(assessmentDescription);
-    setAssessmentResult(response);
+    // Call Puter AI directly
+    const response = await puter.ai.chat(assessmentDescription);
+    
+    // Set the returned response text
+    setAssessmentResult(response?.toString() || response);
+
   } catch (err) {
     console.error("Assessment analysis failed:", err);
     setAssessmentError(err.message || "Failed to process security assessment.");
@@ -1081,7 +1090,6 @@
     setAssessmentLoading(false);
   }
 };
-
 
         // EOI quote calculator form submittal
         const handleGenerateQuote = (e) => {
