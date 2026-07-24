@@ -1059,33 +1059,28 @@
 
         // Automated security assessments via free Puter.js client (No API key needed)
         const handleAnalyzeSecurityRequirements = async () => {
-          if (!assessmentDescription.trim()) {
-            setAssessmentError("Please enter an operational description before analyzing.");
-            return;
-          }
+  // Ensure puter is loaded on the window object
+  const puterClient = window.puter;
 
-          try {
-            setAssessmentLoading(true);
-            setAssessmentError(null);
-            setAssessmentResult(null);
+  if (!puterClient) {
+    setAssessmentError("AI engine is still loading. Please wait a moment and try again.");
+    return;
+  }
 
-            const promptText = "You are an expert security analyst for JAFI Security Limited. Analyze the following operational security description: \"" + assessmentDescription + "\". Respond ONLY with a valid JSON object matching this exact structure: {\"vulnerabilities\": [\"Threat vector 1\", \"Threat vector 2\", \"Threat vector 3\"], \"recommendedServiceIds\": [\"physical\", \"cbrne\", \"vip\"]}. Note: recommendedServiceIds MUST only contain valid IDs from this list: [\"physical\", \"cbrne\", \"eod\", \"vip\", \"electronic\", \"risk\", \"biometric\", \"events\", \"kennel\"].";
+  try {
+    setAssessmentLoading(true);
+    setAssessmentError(null);
 
-            // Puter AI chat call (Zero key configuration required)
-            const response = await puter.ai.chat(promptText);
-            
-            let rawText = typeof response === 'string' ? response : (response?.message?.content || response?.toString() || "");
-            rawText = rawText.replace(/```json/g, "").replace(/```/g, "").trim();
-            
-            const parsedResult = JSON.parse(rawText);
-            setAssessmentResult(parsedResult);
-          } catch (err) {
-            console.error("Assessment analysis failed:", err);
-            setAssessmentError(err.message || "Failed to process security needs assessment. Please try again.");
-          } finally {
-            setAssessmentLoading(false);
-          }
-        };
+    // Use the verified instance
+    const response = await puterClient.ai.chat(assessmentDescription);
+    setAssessmentResult(response);
+  } catch (err) {
+    console.error("Assessment analysis failed:", err);
+    setAssessmentError(err.message || "Failed to process security assessment.");
+  } finally {
+    setAssessmentLoading(false);
+  }
+};
 
 
         // EOI quote calculator form submittal
