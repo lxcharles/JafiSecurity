@@ -1101,58 +1101,68 @@
           }, 3000);
         };
 
-        // Automated security assessments directly via Pollinations.ai (Client-Side)
+        // Automated security assessments directly via Pollinations.ai (with offline fallback)
 const handleAnalyzeSecurityRequirements = async () => {
   if (!assessmentDescription.trim()) {
     setAssessmentError("Please enter an operational description before analyzing.");
     return;
   }
 
+  setAssessmentLoading(true);
+  setAssessmentError(null);
+  setAssessmentResult(null);
+
+  const systemPrompt = `You are a security expert for JAFI Security Limited in Nigeria. Analyze this user requirement and identify 3 threat/vulnerability vectors and match them to recommended service IDs from this list: ["physical", "cbrne", "eod", "vip", "electronic", "risk", "biometric", "events", "kennel"]. Return ONLY a valid JSON object in this exact format: {"vulnerabilities": ["Vector 1", "Vector 2", "Vector 3"], "recommendedServiceIds": ["serviceId1", "serviceId2"]}`;
+
+  // Heuristic rule engine for offline fallback
+  const runLocalAssessment = (text) => {
+    const descLower = text.toLowerCase();
+    const recs = [];
+    if (descLower.includes("event") || descLower.includes("crowd") || descLower.includes("meeting") || descLower.includes("party")) recs.push("events", "physical");
+    if (descLower.includes("depot") || descLower.includes("pipeline") || descLower.includes("port") || descLower.includes("oil") || descLower.includes("site") || descLower.includes("building")) recs.push("physical", "electronic", "risk");
+    if (descLower.includes("vip") || descLower.includes("escort") || descLower.includes("exec") || descLower.includes("protect")) recs.push("vip");
+    if (descLower.includes("bomb") || descLower.includes("hazard") || descLower.includes("chemical") || descLower.includes("explosive")) recs.push("cbrne", "eod");
+    if (descLower.includes("dog") || descLower.includes("k9") || descLower.includes("patrol") || descLower.includes("sniff")) recs.push("kennel");
+    if (descLower.includes("camera") || descLower.includes("cctv") || descLower.includes("access") || descLower.includes("tech")) recs.push("electronic", "biometric");
+
+    return {
+      vulnerabilities: [
+        "Unmonitored access points and potential physical/insider vulnerabilities.",
+        "Operational delays caused by lacking dedicated, real-time threat detection.",
+        "Absence of integrated security protocols tailored to high-value assets."
+      ],
+      recommendedServiceIds: recs.length > 0 ? Array.from(new Set(recs)) : ["physical", "electronic", "risk"]
+    };
+  };
+
   try {
-    setAssessmentLoading(true);
-    setAssessmentError(null);
-    setAssessmentResult(null);
-
-    const systemPrompt = `You are a security expert for JAFI Security Limited in Nigeria. Analyze this user requirement and identify 3 threat/vulnerability vectors and match them to recommended service IDs from this list: ["physical", "cbrne", "eod", "vip", "electronic", "risk", "biometric", "events", "kennel"]. Return ONLY a valid JSON object without markdown or commentary in this exact format: {"vulnerabilities": ["Vector 1", "Vector 2", "Vector 3"], "recommendedServiceIds": ["serviceId1", "serviceId2"]}`;
-
-    const promptText = `${systemPrompt}\n\nClient Description: ${assessmentDescription}`;
-
-    const response = await fetch(`https://text.pollinations.ai/${encodeURIComponent(promptText)}?json=true`);
+    // Send POST request (More reliable for large prompts & avoids query parameter limits)
+    const response = await fetch("https://text.pollinations.ai/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: assessmentDescription }
+        ],
+        jsonMode: true
+      })
+    });
 
     if (!response.ok) {
-      throw new Error("Unable to reach Pollinations AI engine.");
+      throw new Error("Pollinations API unreachable");
     }
 
     const rawText = await response.text();
-    let data;
-
-    try {
-      // Clean possible code fences or markdown text wrapped around JSON output
-      const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-      data = JSON.parse(jsonMatch ? jsonMatch[0] : rawText);
-    } catch (parseErr) {
-      // Intelligent keyword fallback if LLM response isn't strict JSON
-      const descLower = assessmentDescription.toLowerCase();
-      const recs = [];
-      if (descLower.includes("event") || descLower.includes("crowd") || descLower.includes("meeting")) recs.push("events", "physical");
-      if (descLower.includes("depot") || descLower.includes("pipeline") || descLower.includes("port") || descLower.includes("oil")) recs.push("physical", "electronic", "risk");
-      if (descLower.includes("vip") || descLower.includes("escort") || descLower.includes("exec")) recs.push("vip");
-      if (descLower.includes("bomb") || descLower.includes("hazard") || descLower.includes("chemical")) recs.push("cbrne", "eod");
-
-      data = {
-        vulnerabilities: [
-          "Unmonitored perimeter and access checkpoints along facility entry points.",
-          "Potential unauthorized physical or insider access to sensitive assets.",
-          "Absence of real-time electronic monitoring or threat detection capabilities."
-        ],
-        recommendedServiceIds: recs.length > 0 ? Array.from(new Set(recs)) : ["physical", "electronic", "risk"]
-      };
-    }
+    const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+    const data = JSON.parse(jsonMatch ? jsonMatch[0] : rawText);
 
     setAssessmentResult(data);
   } catch (err) {
-    console.error("Assessment analysis failed:", err);
-    setAssessmentError(err.message || "Failed to process security needs assessment. Please try again.");
+    console.warn("Pollinations AI fetch failed. Switching to local rule engine:", err);
+    // Graceful fallback: complete assessment locally without breaking the user experience
+    const fallbackData = runLocalAssessment(assessmentDescription);
+    setAssessmentResult(fallbackData);
   } finally {
     setAssessmentLoading(false);
   }
